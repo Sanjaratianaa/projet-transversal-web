@@ -1,0 +1,93 @@
+<!-- ============================================================== -->
+<!-- Simple four boxes Row -->
+<!-- ============================================================== -->
+<mat-card class="cardWithShadow">
+  <mat-card-content>
+    <mat-card-title>Mouvement de stocks</mat-card-title>
+    <!-- <mat-card-subtitle>This is test page</mat-card-subtitle> -->
+  </mat-card-content>
+</mat-card>
+
+<!-- ============================================================== -->
+<!-- Piece Page Content -->
+<!-- ============================================================== -->
+
+<!-- Ajout d'un nouvel employé -->
+<mat-card class="cardWithShadow">
+  <mat-card-content>
+    <button mat-flat-button color="primary" class="m-r-8" (click)="openModal()">Faire un mouvement</button>
+  </mat-card-content>
+</mat-card>
+
+
+
+<!-- ============================================================== -->
+<!-- Piece List -->
+<!-- ============================================================== -->
+<mat-card class="cardWithShadow">
+  <mat-card-content>
+    <mat-card-title>Liste des mouvements</mat-card-title>
+    <mat-table [dataSource]="paginatedStocks" matSort class="mat-elevation-z8">
+      <ng-container matColumnDef="piece">
+        <mat-header-cell *matHeaderCellDef> Piece </mat-header-cell>
+        <mat-cell *matCellDef="let sctok"> {{ sctok.piece.libelle }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="marquePiece">
+        <mat-header-cell *matHeaderCellDef> Marque piece </mat-header-cell>
+        <mat-cell *matCellDef="let sctok"> {{ sctok.marquePiece }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="marqueVoiture">
+        <mat-header-cell *matHeaderCellDef> Marque voiture </mat-header-cell>
+        <mat-cell *matCellDef="let sctok"> {{ sctok.marqueVoiture?.libelle ? sctok.marqueVoiture.libelle : 'Tous' }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="modeleVoiture">
+        <mat-header-cell *matHeaderCellDef> Modele voiture </mat-header-cell>
+        <mat-cell *matCellDef="let sctok"> {{ sctok.modeleVoiture?.libelle ? sctok.modeleVoiture.libelle : 'Tous' }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="typeTransmission">
+        <mat-header-cell *matHeaderCellDef> Type Transmission </mat-header-cell>
+        <mat-cell *matCellDef="let sctok"> {{ sctok.typeTransmission?.libelle ? sctok.typeTransmission.libelle : 'Tous' }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="entree">
+        <mat-header-cell *matHeaderCellDef> Entrée </mat-header-cell>
+        <mat-cell *matCellDef="let sctok"> {{ sctok.entree }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="sortie">
+        <mat-header-cell *matHeaderCellDef> Sortie </mat-header-cell>
+        <mat-cell *matCellDef="let sctok"> {{ sctok.sortie }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="prixUnitaire">
+        <mat-header-cell *matHeaderCellDef> Prix Unitaire </mat-header-cell>
+        <mat-cell *matCellDef="let sctok"> {{ sctok.prixUnitaire }} </mat-cell>
+      </ng-container>
+      
+      <ng-container matColumnDef="Date et heure">
+        <mat-header-cell *matHeaderCellDef> Date d'enregistrement </mat-header-cell>
+        <mat-cell *matCellDef="let sctok"> {{ sctok.dateHeure | date:'dd/MM/yyyy HH:mm:ss' }} </mat-cell>
+      </ng-container>
+      
+      <ng-container matColumnDef="Manager">
+        <mat-header-cell *matHeaderCellDef> Reponsable </mat-header-cell>
+        <mat-cell *matCellDef="let sctok"> 
+          {{ sctok.manager?.personne.nom }} {{ sctok.manager?.personne.prenom }} 
+        </mat-cell>
+      </ng-container>
+
+      <!-- Table Header & Row Definitions -->
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <!-- Pagination -->
+    <mat-paginator *ngIf="stocks && stocks.length > 5" [length]="stocks.length" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
+      (page)="onPaginateChange($event)">
+    </mat-paginator>
+  </mat-card-content>
+</mat-card>

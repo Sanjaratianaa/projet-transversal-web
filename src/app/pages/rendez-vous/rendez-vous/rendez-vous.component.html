@@ -1,0 +1,62 @@
+<mat-card>
+    <mat-card-content>
+        <div class="d-flex align-items-center">
+            <mat-card-title class="mat-mdc-card-title m-b-0">
+                <span class="rounded p-x-8 p-y-2 text-primary bg-light-primary f-s-12 f-w-500">Rendez-vous</span>
+            </mat-card-title>
+            <div class="m-l-auto">
+                <button *ngIf="isClient" mat-flat-button color="primary" class="m-r-8" (click)="openModal()">
+                    Prendre rendez-vous
+                </button>
+            </div>
+        </div>
+
+        <div class="legend-container">
+            <div class="legend-item" *ngFor="let item of legendItems">
+                <span class="legend-color" [style.background-color]="item.color"></span>
+                <span>{{ item.label }}</span>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+<mat-card class="mat-mdc-card mdc-card cardWithShadow overflow-hidden">
+    <mat-toolbar class="mat-toolbar bg-primary text-white no-shadow mat-toolbar-multiple-rows">
+        <mat-toolbar-row class="mat-toolbar-row">
+            <div class="d-flex align-items-center w-100">
+                <span>{{ viewDate | date:'MMMM yyyy' }}</span>
+                <div class="m-l-auto d-flex align-items-center">
+                    <button mat-icon-button
+                        class="text-white mdc-icon-button mat-mdc-icon-button mat-unthemed mat-mdc-button-base"
+                        (click)="previousMonth()">
+                        <mat-icon role="img"
+                            class="mat-icon notranslate material-icons mat-ligature-font mat-icon-no-color"
+                            aria-hidden="true" data-mat-icon-type="font">chevron_left</mat-icon>
+                    </button>
+                    <button mat-icon-button
+                        class="text-white mdc-icon-button mat-mdc-icon-button mat-unthemed mat-mdc-button-base"
+                        (click)="today()">
+                        <mat-icon role="img"
+                            class="mat-icon notranslate material-icons mat-ligature-font mat-icon-no-color"
+                            aria-hidden="true" data-mat-icon-type="font">today</mat-icon>
+                    </button>
+                    <button mat-icon-button
+                        class="text-white mdc-icon-button mat-mdc-icon-button mat-unthemed mat-mdc-button-base"
+                        (click)="nextMonth()">
+                        <mat-icon role="img"
+                            class="mat-icon notranslate material-icons mat-ligature-font mat-icon-no-color"
+                            aria-hidden="true" data-mat-icon-type="font">chevron_right</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-card-content class="mat-mdc-card-content">
+        <div>
+            <mwl-calendar-month-view [viewDate]="viewDate" [events]="events" (dayClicked)="dayClicked($event)"
+                (eventClicked)="handleEvent('Clicked', $event.event)" [activeDayIsOpen]="activeDayIsOpen"
+                (refresh)="refresh.next()">
+            </mwl-calendar-month-view>
+        </div>
+    </mat-card-content>
+</mat-card>

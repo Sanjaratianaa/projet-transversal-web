@@ -1,0 +1,350 @@
+<div class="rendez-vous-intervention-details">
+    <main class="pageWrapper maxWidth">
+        <app-breadcrumb>
+            <div class="bg-white rounded p-20 m-b-30">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <h4 class="page-title m-0 f-s-18 f-w-600">Rendez-vous interventions</h4>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="d-flex align-items-center justify-content-lg-end">
+                            <mat-card-title class="mat-mdc-card-title m-b-0">
+                                <span
+                                    class="rounded p-x-8 p-y-2 text-primary bg-light-primary f-s-12 f-w-500">Details</span>
+                            </mat-card-title>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </app-breadcrumb>
+
+        <mat-card class="mat-mdc-card mdc-card cardWithShadow">
+            <mat-tab-group mat-stretch-tabs="false" animationDuration="0ms" class="mat-primary">
+
+                <mat-tab label="Details">
+                    <ng-template mat-tab-label>
+                        <div class="d-flex align-items-center">
+                            <mat-icon class="icon-20 m-r-8 d-flex">description</mat-icon>
+                            Details
+                        </div>
+                    </ng-template>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <mat-card class="mat-mdc-card mdc-card cardWithShadow">
+                                <mat-card-content class="mat-mdc-card-content p-y-24">
+                                    <mat-card-title class="mat-mdc-card-title">Voiture</mat-card-title>
+                                    <mat-card-subtitle class="mat-mdc-card-subtitle f-s-14">Information sur la voiture
+                                    </mat-card-subtitle>
+                                    <div class="m-t-24" *ngIf="rendezVous?.voiture">
+                                        <p>Immatriculation: {{ rendezVous?.voiture?.numeroImmatriculation || 'Non
+                                            renseignée' }}</p>
+                                        <p>Marque: {{ rendezVous?.voiture?.marque?.libelle || 'Non renseignée' }}</p>
+                                        <p>Modèle: {{ rendezVous?.voiture?.modele?.libelle || 'Non renseigné' }}</p>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                        <div class="col-sm-6">
+                            <mat-card class="mat-mdc-card mdc-card cardWithShadow">
+                                <mat-card-content class="mat-mdc-card-content p-y-24">
+                                    <mat-card-title class="mat-mdc-card-title">Mécanicien</mat-card-title>
+                                    <div class="m-t-24">
+                                        <ul>
+                                            <li *ngFor="let service of rendezVous?.services || []">
+                                                {{ service.sousSpecialite.libelle || 'Service inconnu' }}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                    </div>
+                </mat-tab>
+
+                <mat-tab label="Services">
+                    <ng-template mat-tab-label>
+                        <div class="d-flex align-items-center">
+                            <mat-icon class="icon-20 m-r-8 d-flex">build</mat-icon>
+                            Services
+                        </div>
+                    </ng-template>
+                    <mat-card-content class="p-y-14">
+                        <div *ngIf="rendezVous && rendezVous.services">
+                            <div *ngFor="let service of rendezVous.services">
+                                <div
+                                    *ngIf="isCurrentUser(service) && service.status !== 'terminé' else completedServiceOrNotCurrentUser">
+                                    <mat-card class="">
+                                        <mat-card-content>
+                                            <mat-card-title style="margin-bottom: 2%; word-wrap: break-word;">{{
+                                                service.sousSpecialite.libelle }} : {{ service.raison || '-- --' }}
+                                            </mat-card-title>
+
+                                            <div class="w-100">
+                                                <mat-form-field appearance="outline" class="w-50 m-r-8">
+                                                    <mat-label>Heure Debut</mat-label>
+                                                    <input matInput type="datetime-local"
+                                                        [(ngModel)]="service.heureDebut">
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" class="w-50 m-r-8">
+                                                    <mat-label>Heure Fin</mat-label>
+                                                    <input matInput type="datetime-local"
+                                                        [(ngModel)]="service.heureFin">
+                                                </mat-form-field>
+                                            </div>
+
+                                            <mat-form-field appearance="outline" class="w-50  m-r-8">
+                                                <mat-label>Quantité Finale</mat-label>
+                                                <input matInput type="number" [(ngModel)]="service.quantiteFinale"
+                                                    (ngModelChange)="calculatePrixTotal(service)">
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" class="w-50 m-r-8">
+                                                <mat-label>Prix Unitaire</mat-label>
+                                                <input matInput type="number" [(ngModel)]="service.prixUnitaire"
+                                                    (ngModelChange)="calculatePrixTotal(service)">
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" class="w-50 m-r-8">
+                                                <mat-label>Prix Total</mat-label>
+                                                <input matInput type="number" [(ngModel)]="service.prixTotal"
+                                                    [readonly]="true">
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" class="w-100">
+                                                <mat-label>Commentaire</mat-label>
+                                                <textarea matInput [(ngModel)]="service.commentaire"></textarea>
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" class="w-50 m-r-8">
+                                                <mat-label>Status</mat-label>
+                                                <mat-select [(ngModel)]="service.tempStatus"
+                                                    [disabled]="!isCurrentUser(service)">
+                                                    <mat-option value="en cours">En Cours</mat-option>
+                                                    <mat-option value="en attente">En Attente</mat-option>
+                                                    <mat-option value="suspendue">Suspendue</mat-option>
+                                                    <mat-option value="terminé">Terminé</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <div class="w-100">
+                                                <button mat-flat-button (click)="saveService(service)"
+                                                    class="bg-warning text-white mdc-button mdc-button--unelevated mat-mdc-unelevated-button mat-unthemed mat-mdc-button-base">
+                                                    <span
+                                                        class="mat-mdc-button-persistent-ripple mdc-button__ripple"></span>
+                                                    <span class="mdc-button__label">Enregistrer</span>
+                                                    <span class="mat-focus-indicator"></span>
+                                                    <span class="mat-mdc-button-touch-target"></span>
+                                                    <span class="mat-ripple mat-mdc-button-ripple"></span>
+                                                </button>
+                                            </div>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </div>
+
+                                <ng-template #completedServiceOrNotCurrentUser>
+                                    <div
+                                        *ngIf="isCurrentUser(service) && service.status === 'terminé' || !isCurrentUser(service)">
+                                        <mat-card
+                                            class="mat-mdc-card mdc-card cardWithShadow img-task m-b-15 overflow-hidden">
+                                            <div
+                                                class="d-flex align-items-center justify-content-between p-x-12 p-y-10">
+                                                <p><span class="f-s-14 f-w-600">{{ service.sousSpecialite.libelle }} :
+                                                    </span>{{ service.raison || '-- --' }} </p>
+                                            </div>
+
+                                            <div>
+                                                <div
+                                                    class="d-flex align-items-center justify-content-between p-x-12 p-y-10">
+                                                    <div class="d-flex align-items-center gap-4">
+                                                        <!-- Calendar Icon (Replace with your icon component) -->
+                                                        <mat-icon>calendar_month</mat-icon>
+                                                        <span class="f-s-12 lh-base">{{
+                                                            formatDate(rendezVous.dateRendezVous) | date:'dd/MM/yyyy
+                                                            HH:mm:ss' }}</span>
+                                                    </div>
+                                                    <span class="rounded f-s-12 p-x-8 text-white"
+                                                        [ngStyle]="getServiceStatusStyle(service.status)">
+                                                        {{ service.status }}
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <!-- Mechanic, Start Time, and End Time -->
+                                                <div
+                                                    class="d-flex align-items-center justify-content-between p-x-12 p-y-10">
+                                                    <span class="f-s-12"><strong>Mecanicien:</strong> {{
+                                                        service.mecanicien.nom }} {{
+                                                        service.mecanicien.prenom }}</span>
+                                                    <span class="f-s-12"><strong>Time:</strong> {{
+                                                        formatDate(service.heureDebut) | date:'dd/MM/yyyy HH:mm:ss' }} -
+                                                        {{ formatDate(service.heureFin) | date:'dd/MM/yyyy HH:mm:ss'
+                                                        }}</span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Avis et note -->
+                                            <div class="p-x-12 p-y-10">
+                                                <span class="f-s-12">
+                                                    <strong>Avis : </strong>
+                                                    {{ service.avis || '-- --'}}
+                                                </span>
+                                            </div>
+
+                                            <!--  note -->
+                                            <div class="p-x-12 p-y-10">
+                                                <div class="d-flex align-items-center f-s-12">
+                                                    <strong>Note :</strong>
+
+                                                    <ng-container *ngFor="let star of [1,2,3,4,5]">
+                                                        <mat-icon color="warn">
+                                                            {{ star <= (service.note / 2) ? 'star' : 'star_border' }}
+                                                                </mat-icon>
+                                                    </ng-container>
+
+                                                    <span class="m-l-8"> ({{ service.note || 0 }}/10) </span>
+                                                </div>
+                                            </div>
+
+                                            <div class="text-end p-x-12 p-b-10">
+                                                <button mat-flat-button
+                                                    *ngIf="isClient && service.status === 'terminé' && !service.avis"
+                                                    (click)="openAddAvisModal(rendezVous._id, service._id)"
+                                                    class="bg-secondary text-white w-auto m-r-12">
+                                                    <span class="mdc-button__label">Ajouter avis</span>
+                                                </button>
+                                            </div>
+                                        </mat-card>
+                                    </div>
+                                </ng-template>
+                            </div>
+                        </div>
+
+                        <button mat-flat-button *ngIf="!isClient"
+                            class="bg-secondary text-white mdc-button mdc-button--unelevated mat-mdc-unelevated-button mat-unthemed mat-mdc-button-base"
+                            (click)="saveAllServices()">
+                            <span class="mat-mdc-button-persistent-ripple mdc-button__ripple"></span>
+                            <span class="mdc-button__label">Enregistrer tout</span>
+                            <span class="mat-focus-indicator"></span>
+                            <span class="mat-mdc-button-touch-target"></span>
+                            <span class="mat-ripple mat-mdc-button-ripple"></span>
+                        </button>
+
+                    </mat-card-content>
+                </mat-tab>
+
+                <mat-tab label="Pieces">
+                    <ng-template mat-tab-label>
+                        <div class="d-flex align-items-center">
+                            <mat-icon class="icon-20 m-r-8 d-flex">build</mat-icon>
+                            Pieces
+                        </div>
+                    </ng-template>
+                    <mat-card-content class="p-y-14">
+
+                        <!-- Ajout d'un nouvel employé -->
+                        <mat-card class="cardWithShadow" *ngIf="!isClient">
+                            <mat-card-content>
+                                <button mat-flat-button color="primary" class="m-r-8" (click)="openModal()">Ajouter des
+                                    pieces</button>
+                            </mat-card-content>
+                        </mat-card>
+
+                        <div *ngIf="rendezVous && rendezVous.piecesAchetees">
+                            <mat-card class="cardWithShadow">
+                                <mat-card-content>
+                                    <mat-card-title>Liste des pièces</mat-card-title>
+                                    <ng-container *ngIf="paginatedPieces.length > 0; else noDataMessage">
+                                        <mat-table [dataSource]="paginatedPieces" matSort class="mat-elevation-z8">
+                                            <ng-container matColumnDef="piece">
+                                                <mat-header-cell *matHeaderCellDef> Libelle </mat-header-cell>
+                                                <mat-cell *matCellDef="let piece"> {{ piece.piece.libelle }} </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="marquePiece">
+                                                <mat-header-cell *matHeaderCellDef> Marque piece </mat-header-cell>
+                                                <mat-cell *matCellDef="let piece"> {{ piece.marquePiece || '--' }}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="marqueVoiture">
+                                                <mat-header-cell *matHeaderCellDef> Marque voiture </mat-header-cell>
+                                                <mat-cell *matCellDef="let piece"> {{ piece.marqueVoiture?.libelle ?
+                                                    piece.marqueVoiture.libelle : 'Tous' }} </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="modeleVoiture">
+                                                <mat-header-cell *matHeaderCellDef> Modele voiture </mat-header-cell>
+                                                <mat-cell *matCellDef="let piece"> {{ piece.modeleVoiture?.libelle ?
+                                                    piece.modeleVoiture.libelle : 'Tous' }} </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="typeTransmission">
+                                                <mat-header-cell *matHeaderCellDef> Type Transmission </mat-header-cell>
+                                                <mat-cell *matCellDef="let piece"> {{ piece.typeTransmission?.libelle ?
+                                                    piece.typeTransmission.libelle : 'Tous' }}</mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="Quantite">
+                                                <mat-header-cell *matHeaderCellDef> Quantite </mat-header-cell>
+                                                <mat-cell *matCellDef="let piece"> {{ piece.quantite }} </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="Prix Unitaire">
+                                                <mat-header-cell *matHeaderCellDef> Prix Unitaire </mat-header-cell>
+                                                <mat-cell *matCellDef="let piece"> {{ piece.prixUnitaire }} </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="Prix Total">
+                                                <mat-header-cell *matHeaderCellDef> Prix Total </mat-header-cell>
+                                                <mat-cell *matCellDef="let piece"> {{ piece.prixTotal }} </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="Commentaire">
+                                                <mat-header-cell *matHeaderCellDef> Commentaire </mat-header-cell>
+                                                <mat-cell *matCellDef="let piece"> {{ piece.commentaire || '--'}}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="actions">
+                                                <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+                                                <mat-cell *matCellDef="let piece">
+                                                    <button mat-icon-button color="warn">
+                                                        <mat-icon>delete</mat-icon>
+                                                    </button>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <!-- Table Header & Row Definitions -->
+                                            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                                            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                                        </mat-table>
+                                    </ng-container>
+
+                                    <!-- Message si aucun rendez-vous -->
+                                    <ng-template #noDataMessage>
+                                        <p class="text-center text-muted">
+                                            🛠️ Aucune pièce n’a encore été achetée pour cette intervention.
+                                        </p>
+                                    </ng-template>
+
+                                    <!-- Pagination -->
+                                    <mat-paginator *ngIf="pieces && pieces.length > 5" [length]="pieces.length"
+                                        [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
+                                        (page)="onPaginateChange($event)">
+                                    </mat-paginator>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+
+                    </mat-card-content>
+                </mat-tab>
+
+            </mat-tab-group>
+
+            <mat-card-actions>
+                <button mat-flat-button (click)="goBack()">Retour</button>
+            </mat-card-actions>
+        </mat-card>
+    </main>
+</div>

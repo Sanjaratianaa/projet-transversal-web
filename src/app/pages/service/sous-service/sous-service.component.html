@@ -1,0 +1,155 @@
+<mat-card class="cardWithShadow">
+    <mat-card-content>
+        <mat-card-title>Sous service disponible</mat-card-title>
+        <!-- <mat-card-subtitle>This is test page</mat-card-subtitle> -->
+    </mat-card-content>
+</mat-card>
+
+<mat-card class="mat-mdc-card mdc-card cardWithShadow">
+    <!-- Barre des services en haut -->
+    <mat-card-content>
+        <div class="service-buttons">
+            <!-- Card "Tous les services" -->
+            <mat-card class="service-card" (click)="selectService(null)"
+                [ngStyle]="{ 'background-color': getColorForService(1) }">
+                <mat-card-header>
+                    <mat-icon mat-card-avatar class="service-icon">expand_more</mat-icon>
+                    <mat-card-title>Tous les services</mat-card-title>
+                </mat-card-header>
+            </mat-card>
+
+            <!-- Cartes des autres services -->
+            <mat-card *ngFor="let service of services; let i = index" class="service-card"
+                (click)="selectService(service)" [ngStyle]="{ 'background-color': getColorForService(i) }">
+                <mat-card-header [ngClass]="{ 'active-service': selectedService?._id === service._id }">
+                    <mat-icon mat-card-avatar class="service-icon" style="margin: 0px;">build</mat-icon>
+                    <mat-card-title>{{ service.libelle }}</mat-card-title>
+                </mat-card-header>
+            </mat-card>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+<mat-card class="mat-mdc-card mdc-card cardWithShadow">
+    <mat-card-content class="mat-mdc-card-content">
+        <div class="row justify-content-between align-items-center">
+
+            <!-- Champ de recherche avec application de filtre -->
+            <div class="col-sm-4">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Rechercher un sous-service</mat-label>
+                    <input matInput (input)="applyFilter($event)" placeholder="Ex: Réparation moteur" />
+                    <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <!-- Bouton d'ajout de sous-service(click)="openModal()"  -->
+            <div class="col-sm-4 d-flex align-items-center justify-content-end"  *ngIf="isAdmin">
+                <button mat-flat-button color="primary" class="m-r-8" (click)="openModal()">
+                    Ajout nouveau sous service
+                </button>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+
+
+<mat-card class="cardWithShadow">
+    <mat-card-content>
+        <!-- 🔹 Tableau des sous-services -->
+        <mat-card class="table-container">
+            <mat-table [dataSource]="paginatedSousServices" class="mat-elevation-z8">
+                <!-- 🟠 Colonne Service -->
+                <ng-container matColumnDef="service">
+                    <mat-header-cell *matHeaderCellDef> Service </mat-header-cell>
+                    <mat-cell *matCellDef="let sousService"> {{ sousService.service.libelle }} </mat-cell>
+                </ng-container>
+
+                <!-- 🟢 Colonne Nom -->
+                <ng-container matColumnDef="libelle">
+                    <mat-header-cell *matHeaderCellDef> Sous Service </mat-header-cell>
+                    <mat-cell *matCellDef="let sousService"> {{ sousService.libelle }} </mat-cell>
+                </ng-container>
+
+                <!-- 🟢 Colonne Duree -->
+                <ng-container matColumnDef="duree">
+                    <mat-header-cell *matHeaderCellDef> Durée </mat-header-cell>
+                    <mat-cell *matCellDef="let sousService"> {{ sousService.duree }} mn</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Prix">
+                    <mat-header-cell *matHeaderCellDef> Prix </mat-header-cell>
+                    <mat-cell *matCellDef="let sousService"> {{ sousService.prixUnitaire }} Ar </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="remise">
+                    <mat-header-cell *matHeaderCellDef> Remise </mat-header-cell>
+                    <mat-cell *matCellDef="let sousService"> {{ sousService.remise }} % </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Date d'enregistrement">
+                    <mat-header-cell *matHeaderCellDef> Date d'enregistrement </mat-header-cell>
+                    <mat-cell *matCellDef="let sousService"> {{ sousService.dateEnregistrement | date:'dd/MM/yyyy
+                        hh:mm:ss' }} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Manager">
+                    <mat-header-cell *matHeaderCellDef> Manager </mat-header-cell>
+                    <mat-cell *matCellDef="let sousService">
+                        {{ sousService.manager?.personne.nom }} {{ sousService.manager?.personne.prenom }}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Date Suppression">
+                    <mat-header-cell *matHeaderCellDef> Date Suppression </mat-header-cell>
+                    <mat-cell *matCellDef="let sousService">
+                        {{ sousService.dateSuppression ? (sousService.dateSuppression | date:'dd/MM/yyyy hh:mm:ss') :
+                        '-- --' }}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Manager Suppression">
+                    <mat-header-cell *matHeaderCellDef> Manager Suppression </mat-header-cell>
+                    <mat-cell *matCellDef="let sousService">
+                        {{ sousService.managerSuppression?.personne.nom || '--' }} {{
+                        sousService.managerSuppression?.personne.prenom || '--' }}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Statut">
+                    <mat-header-cell *matHeaderCellDef> Statut </mat-header-cell>
+                    <mat-cell *matCellDef="let sousService">
+                        <div [ngClass]="{'inactive-status': sousService.dateSuppression, 'active-status': !sousService.dateSuppression}"
+                            class="status-container">
+                            <!-- Si la sousService a une date de suppression, elle est inactive -->
+                            <span>{{ sousService.etat }}</span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+
+                <!-- 🔵 Colonne Actions -->
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+                    <mat-cell *matCellDef="let sousService">
+                        <button mat-icon-button color="primary" (click)="editSousService(sousService)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn" (click)="openDeleteConfirmation(sousService)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 🏆 En-tête et corps du tableau -->
+                <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: columns;"></mat-row>
+            </mat-table>
+
+            <!-- Pagination -->
+            <mat-paginator *ngIf="filteredSousServices && filteredSousServices.length > 5" [length]="filteredSousServices.length" [pageSizeOptions]="pageSizeOptions"
+                showFirstLastButtons (page)="onPaginateChange($event)"></mat-paginator>
+        </mat-card>
+    </mat-card-content>
+</mat-card>

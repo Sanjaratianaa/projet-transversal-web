@@ -1,0 +1,72 @@
+<!-- ============================================================== -->
+<!-- Simple four boxes Row -->
+<!-- ============================================================== -->
+<mat-card class="cardWithShadow">
+  <mat-card-content>
+    <mat-card-title>Employee</mat-card-title>
+    <!-- <mat-card-subtitle>This is test page</mat-card-subtitle> -->
+  </mat-card-content>
+</mat-card>
+
+<!-- ============================================================== -->
+<!-- Employee Page Content -->
+<!-- ============================================================== -->
+
+<!-- Ajout d'un nouvel employé -->
+<mat-card class="cardWithShadow">
+  <mat-card-content>
+    <button mat-flat-button color="primary" class="m-r-8" (click)="openModal()">Add Employee</button>
+  </mat-card-content>
+</mat-card>
+
+
+
+<!-- ============================================================== -->
+<!-- Employee List -->
+<!-- ============================================================== -->
+<mat-card class="cardWithShadow">
+  <mat-card-content>
+    <mat-card-title>Employee List</mat-card-title>
+    <mat-table [dataSource]="paginatedEmployees" matSort class="mat-elevation-z8">
+      <!-- ID Column -->
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+        <mat-cell *matCellDef="let employee"> {{employee.id}} </mat-cell>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+        <mat-cell *matCellDef="let employee"> {{employee.name}} </mat-cell>
+      </ng-container>
+
+      <!-- Department Column -->
+      <ng-container matColumnDef="department">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Department </mat-header-cell>
+        <mat-cell *matCellDef="let employee"> {{employee.department}} </mat-cell>
+      </ng-container>
+
+      <!-- Action Column -->
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+        <mat-cell *matCellDef="let employee">
+          <button mat-icon-button color="primary" (click)="editEmployee(employee)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="openDeleteConfirmation(employee.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Table Header & Row Definitions -->
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <!-- Pagination -->
+    <mat-paginator [length]="employees.length" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
+      (page)="onPaginateChange($event)">
+    </mat-paginator>
+  </mat-card-content>
+</mat-card>

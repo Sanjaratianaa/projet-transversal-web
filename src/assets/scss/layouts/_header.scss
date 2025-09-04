@@ -1,0 +1,63 @@
+@use "../variables" as *;
+
+// html .topbar {
+//   position: stifixcky;
+//   top: 0;
+//   z-index: 9;
+//   height: $header-height;
+
+//   i-tabler {
+//     stroke-width: 1.5px;
+//   }
+// }
+
+html .topbar {
+  position: fixed;
+  top: 0;
+  left: 10%;
+  width: 90%;
+  height: $header-height;
+  background-color: white;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1050; // Assure qu'elle est au-dessus des autres éléments
+  display: flex;
+  align-items: center;
+  // padding: 0 20px;
+  overflow: visible !important; // Empêche la coupure des éléments
+  i-tabler {
+    stroke-width: 1.5px;
+  }
+}
+
+.profile-btn-dd {
+  flex-shrink: 0; // Empêche la réduction du bouton
+  z-index: 1051; // Assure qu'il est bien visible au-dessus de la topbar
+  position: relative; // Évite qu'il sorte du flux normal
+}
+
+
+.topbar-dd {
+  min-width: 200px !important;
+}
+
+.text-hover-primary:hover {
+  .hover-text {
+    color: $primary;
+  }
+}
+
+.object-cover {
+  object-fit: cover;
+}
+
+.fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 20%;
+  background-color: white; /* Ajuste la couleur si besoin */
+  z-index: 1000; /* Pour s'assurer qu'il reste au-dessus des autres éléments */
+  // padding: 10px; /* Ajuste selon ton design */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optionnel : ajoute une ombre pour le distinguer */
+  height: $header-height;
+}

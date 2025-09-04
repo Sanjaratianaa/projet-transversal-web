@@ -1,0 +1,20 @@
+<mat-card class="cardWithShadow theme-card">
+    <mat-card-header>
+        <mat-card-title class="m-b-0">{{ data.title }}</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="b-t-1">
+        <!-- Affichage de l'erreur globale (si elle existe) -->
+        <div class="error-message" style="color: red; margin-bottom: 20px;">
+            {{ data.message }}
+        </div>
+
+        <div class="m-t-12 d-flex justify-content-end">
+            <button mat-stroked-button style="background-color: red; color: white" class="m-r-8"
+                (click)="confirmDelete()">
+                Confirmer
+            </button>
+            <button mat-flat-button color="primary" (click)="cancelDelete()">Annuler</button>
+        </div>
+    </mat-card-content>
+</mat-card>

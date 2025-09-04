@@ -1,0 +1,38 @@
+<mat-card class="cardWithShadow theme-card">
+    <mat-card-header class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <mat-card-title class="m-b-0">
+            Répondre à une demande de congé
+        </mat-card-title>
+        <!-- Icone de fermeture à droite -->
+        <button mat-icon-button (click)="close()" aria-label="Fermer" class="close-btn">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-card-header>
+
+    <mat-card-content class="b-t-1 scrollable-modal">
+        <form [formGroup]="form">
+            <!-- Affichage de l'erreur globale (si elle existe) -->
+            <div *ngIf="data.errorMessage" class="error-message" style="color: red; margin-bottom: 20px;">
+                {{ data.errorMessage }}
+            </div>
+
+            <!-- Zone de commentaire -->
+            <!-- <h3>Commentaire</h3> -->
+            <mat-form-field class="w-100">
+                <mat-label>Commentaire</mat-label>
+                <textarea matInput placeholder="Ajouter un commentaire..." formControlName="commentaire"
+                    aria-label="Ajouter un commentaire"></textarea>
+            </mat-form-field>
+
+            <!-- Boutons d'action -->
+            <div class="m-t-12 d-flex justify-content-end">
+                <button mat-stroked-button
+                    [ngStyle]="{ 'background-color': peutValider() ? 'green' : 'lightgreen', 'color': 'white' }"
+                    class="m-r-8" (click)="valider()" [disabled]="!peutValider()">Valider</button>
+                <button mat-stroked-button
+                    [ngStyle]="{ 'background-color': peutRejeter() ? 'red' : 'lightcoral', 'color': 'white' }"
+                    (click)="rejeter()" [disabled]="!peutRejeter()">Rejeter</button>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

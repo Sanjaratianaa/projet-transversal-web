@@ -1,0 +1,46 @@
+<div class="blank-layout-container justify-content-center align-items-center bg-light">
+    <div class="position-relative row w-100 h-100 bg-gredient justify-content-center">
+      <div class="col-lg-4 d-flex align-items-center">
+        <mat-card class="cardWithShadow boxed-auth">
+          <mat-card-content class="p-32">
+            <div class="text-center">
+              <a [routerLink]="['/dashboard']">
+                <img src="./assets/images/logos/logo.svg" class="align-middle m-2" alt="logo" />
+              </a>
+            </div>
+  
+            <form class="m-t-30" [formGroup]="form" (ngSubmit)="submit()">
+  
+              <mat-label class="f-s-14 f-w-600 m-b-12 d-block">Email</mat-label>
+              <mat-form-field appearance="outline" class="w-100" color="primary">
+                <input matInput placeholder="Entrez votre email" formControlName="email" required>
+                <mat-error *ngIf="f['email'].hasError('required')">Email is required</mat-error>
+                <mat-error *ngIf="f['email'].hasError('email')">Please enter a valid email address</mat-error>
+              </mat-form-field>
+  
+              <!-- password -->
+              <mat-label class="f-s-14 f-w-600 m-b-12 d-block">Mot de passe</mat-label>
+              <mat-form-field appearance="outline" class="w-100" color="primary">
+                <input matInput type="password" placeholder="Entrez votre mot de passe!" formControlName="password" required>
+                <mat-error *ngIf="f['password'].hasError('required')">Password is required</mat-error>
+              </mat-form-field>
+
+              <div *ngIf="errorMessage" class="error-message-login">
+                {{ errorMessage }}
+              </div>
+  
+              <div class="d-flex align-items-center m-b-12">
+                <a [routerLink]="['/authentication/resetPassword']" class="text-primary f-w-600 text-decoration-none m-l-auto f-s-14">Mot de passe oubliée ?</a>
+              </div>
+              <button mat-flat-button color="primary" class="w-100" type="submit" [disabled]="isLoading">
+                <mat-icon *ngIf="isLoading" class="loading-icon" [ngClass]="{ 'spin': true }">sync</mat-icon>
+                <span>Se connecter</span>
+              </button>
+              <!-- input -->
+            </form>
+              
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
