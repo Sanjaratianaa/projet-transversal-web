@@ -153,7 +153,7 @@ export class PersonneComponent {
             numeroTelephone: result.numeroTelephone,
             email: result.email,
             motDePasse: "",
-            idRole: "Mécanicien",
+            idRole: "Utilisateur",
             dateEmbauche: result.dateEmbauche
           };
 

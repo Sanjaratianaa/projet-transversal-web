@@ -23,7 +23,6 @@
     "@ng-matero/extensions": "^17.0.0",
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
-    "angular": "^1.8.3",
     "angular-calendar": "^0.31.1",
     "angular-tabler-icons": "^2.7.0",
     "apexcharts": "^3.40.0",
