@@ -1,0 +1,168 @@
+<mat-card class="cardWithShadow theme-card">
+    <mat-card-header class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <mat-card-title class="m-b-0">
+            {{ data.isValidable ? 'Répondre à une demande de rendez-vous' : 'Détails du Rendez-vous' }}
+        </mat-card-title>
+        <!-- Icone de fermeture à droite -->
+        <button mat-icon-button (click)="close()" aria-label="Fermer" class="close-btn">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-card-header>
+
+    <mat-card-content class="b-t-1 scrollable-modal">
+        <form [formGroup]="form">
+            <!-- Affichage de l'erreur globale (si elle existe) -->
+            <div *ngIf="data.errorMessage" class="error-message" style="color: red; margin-bottom: 20px;">
+                {{ data.errorMessage }}
+            </div>
+            <!-- Informations Générales -->
+            <p>
+                <strong>Client :</strong> {{ data.rendezVous.client.nom }} {{ data.rendezVous.client.prenom }}
+            </p>
+            <p>
+                <strong>Téléphone :</strong> {{ data.rendezVous.client.numeroTelephone }}
+            </p>
+            <p>
+                <strong>Date & Heure :</strong> {{ data.rendezVous.dateRendezVous | date: 'dd/MM/yyyy HH:mm:ss' }}
+            </p>
+            <p>
+                <strong>Voiture :</strong>
+                {{ data.rendezVous.voiture.marque.libelle }} - {{ data.rendezVous.voiture.modele.libelle }}
+            </p>
+            <p>
+                <strong>Immatriculation :</strong>
+                {{ data.rendezVous.voiture.numeroImmatriculation }}
+            </p>
+
+            <!-- Tableau des Services -->
+            <h3>Services</h3>
+            <!-- Ajout d'un conteneur pour le FormArray -->
+            <div formArrayName="services">
+                <table
+                    *ngIf="(data?.rendezVous?.services?.length ?? 0) > 0 && (servicesFormArray?.controls?.length ?? 0) > 0; else noServices"
+                    mat-table [dataSource]="servicesFormArray.controls" class="mat-elevation-z8">
+
+                    <!-- Sous Service Column -->
+                    <ng-container matColumnDef="sousSpecialite">
+                        <mat-header-cell *matHeaderCellDef> Sous Service </mat-header-cell>
+                        <mat-cell *matCellDef="let ctrl; let i = index">
+                            {{ data.rendezVous.services[i].sousSpecialite.libelle }}
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Raison Column -->
+                    <ng-container matColumnDef="raison">
+                        <mat-header-cell *matHeaderCellDef> Raison </mat-header-cell>
+                        <mat-cell *matCellDef="let ctrl; let i = index">
+                            {{ data.rendezVous.services[i].raison }}
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Quantité Estimée Column -->
+                    <ng-container matColumnDef="quantite">
+                        <mat-header-cell *matHeaderCellDef> Quantité Estimée </mat-header-cell>
+                        <mat-cell *matCellDef="let ctrl; let i = index">
+                            {{ data.rendezVous.services[i].quantiteEstimee }}
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Prix Unitaire Column -->
+                    <ng-container matColumnDef="prix">
+                        <mat-header-cell *matHeaderCellDef> Prix Unitaire </mat-header-cell>
+                        <mat-cell *matCellDef="let ctrl; let i = index">
+                            {{ data.rendezVous.services[i].prixUnitaire }} Ar
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Remise Column -->
+                    <ng-container matColumnDef="remise">
+                        <mat-header-cell *matHeaderCellDef> Remise </mat-header-cell>
+                        <mat-cell *matCellDef="let ctrl; let i = index">
+                            {{ data.rendezVous.services[i].remise }} %
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Mécanicien Assigné Column -->
+                    <ng-container matColumnDef="mecanicien">
+                        <mat-header-cell *matHeaderCellDef> Mécanicien Assigné </mat-header-cell>
+                        <mat-cell *matCellDef="let ctrl; let i = index" [formGroupName]="i">
+                            <div *ngIf="data.isValidable; else readonlyMecanicien">
+                                <mat-form-field appearance="outline" class="w-100">
+                                    <mat-label>Mécanicien Assigné</mat-label>
+                                    <mat-select formControlName="mecanicien" required
+                                        aria-label="Sélectionner un mécanicien">
+                                        <mat-option
+                                            *ngFor="let mec of data?.rendezVous?.services?.[i]?.mecaniciensDisponibles ?? []"
+                                            [value]="mec">
+                                            {{ mec?.personne?.nom }} {{ mec?.personne?.prenom }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <ng-template #readonlyMecanicien>
+                                <span>
+                                    {{ data.rendezVous.services[i].mecanicien ?
+                                    data.rendezVous.services[i].mecanicien.nom : '--' }}
+                                    {{ data.rendezVous.services[i].mecanicien ?
+                                    data.rendezVous.services[i].mecanicien.prenom : '--' }}
+                                </span>
+                            </ng-template>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Table Header & Row Definitions -->
+                    <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: columns;"></mat-row>
+                </table>
+                <ng-template #noServices>
+                    <p>Aucun service enregistré pour ce rendez-vous.</p>
+                </ng-template>
+            </div>
+
+            <!-- Tableau des Détails de la Voiture -->
+            <h3>Détails de la Voiture</h3>
+            <mat-table *ngIf="(voitureDetails?.length ?? 0) > 0 && (displayedColumns?.length ?? 0) > 0; else noDetails"
+                [dataSource]="voitureDetails" class="mat-elevation-z8">
+
+                <!-- Colonne de la propriété -->
+                <ng-container matColumnDef="label">
+                    <mat-header-cell *matHeaderCellDef> Propriété </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{ element.label }} </mat-cell>
+                </ng-container>
+
+                <!-- Colonne de la valeur -->
+                <ng-container matColumnDef="value">
+                    <mat-header-cell *matHeaderCellDef> Valeur </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{ element.value }} </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+            <ng-template #noDetails>
+                <p>Aucune information disponible sur la voiture.</p>
+            </ng-template>
+
+
+            <div *ngIf="data.isValidable">
+                <!-- Zone de commentaire -->
+                <h3>Commentaire</h3>
+                <mat-form-field class="w-100">
+                    <mat-label>Commentaire</mat-label>
+                    <textarea matInput placeholder="Ajouter un commentaire..." formControlName="commentaire"
+                        aria-label="Ajouter un commentaire"></textarea>
+                </mat-form-field>
+
+                <!-- Boutons d'action -->
+                <div class="m-t-12 d-flex justify-content-end">
+                    <button mat-stroked-button
+                        [ngStyle]="{ 'background-color': peutValider() ? 'green' : 'lightgreen', 'color': 'white' }"
+                        class="m-r-8" (click)="valider()" [disabled]="!peutValider()">Valider</button>
+                    <button mat-stroked-button
+                        [ngStyle]="{ 'background-color': peutRejeter() ? 'red' : 'lightcoral', 'color': 'white' }"
+                        (click)="rejeter()" [disabled]="!peutRejeter()">Rejeter</button>
+                </div>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

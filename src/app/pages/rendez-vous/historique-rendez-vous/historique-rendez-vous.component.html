@@ -1,0 +1,118 @@
+<!-- ============================================================== -->
+<!-- Simple four boxes Row -->
+<!-- ============================================================== -->
+<mat-card class="cardWithShadow">
+    <mat-card-content>
+        <mat-card-title>Rendez-vous</mat-card-title>
+        <!-- <mat-card-subtitle>This is test page</mat-card-subtitle> -->
+    </mat-card-content>
+</mat-card>
+
+<!-- ============================================================== -->
+<!-- Service List -->
+<!-- ============================================================== -->
+<mat-card class="cardWithShadow">
+    <mat-card-content>
+        <mat-card-title>{{ isValidable ? 'Liste des demandes de Rendez-vous en attente' : 'Historique des Rendez-vous'
+            }} </mat-card-title>
+        <ng-container *ngIf="paginatedRendezVous.length > 0; else noDataMessage">
+            <mat-table [dataSource]="paginatedRendezVous" matSort class="mat-elevation-z8">
+                <ng-container matColumnDef="Date et heure demande">
+                    <mat-header-cell *matHeaderCellDef> Date et heure demande </mat-header-cell>
+                    <mat-cell *matCellDef="let rendezVous"> {{ rendezVous.dateHeureDemande | date:'dd/MM/yyyy HH:mm:ss'
+                        }}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Client">
+                    <mat-header-cell *matHeaderCellDef> Client </mat-header-cell>
+                    <mat-cell *matCellDef="let rendezVous">
+                        {{ rendezVous.client.nom }} {{ rendezVous.client.prenom }}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Date du rendez-vous">
+                    <mat-header-cell *matHeaderCellDef> Date du rendez-vous </mat-header-cell>
+                    <mat-cell *matCellDef="let rendezVous"> {{ rendezVous.dateRendezVous | date:'dd/MM/yyyy HH:mm:ss' }}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="N° Matriculation">
+                    <mat-header-cell *matHeaderCellDef> N° Immatriculation </mat-header-cell>
+                    <mat-cell *matCellDef="let rendezVous">
+                        {{ rendezVous.voiture.numeroImmatriculation }}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Validateur">
+                    <mat-header-cell *matHeaderCellDef> Validateur </mat-header-cell>
+                    <mat-cell *matCellDef="let rendezVous">
+                        {{ rendezVous.validateur?.nom || '--' }} {{ rendezVous.validateur?.prenom || '--' }}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Remarque">
+                    <mat-header-cell *matHeaderCellDef> Remarque </mat-header-cell>
+                    <mat-cell *matCellDef="let rendezVous">
+                        {{ rendezVous.remarque || '--' }}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Statut">
+                    <mat-header-cell *matHeaderCellDef> Statut </mat-header-cell>
+                    <mat-cell *matCellDef="let rendezVous">
+                        <div [ngClass]="getStatusClass(rendezVous.etat)" class="status-container"
+                            (click)="isValidable && isAdmin && rendezVous.etat === 'en attente' ? openAnswerDetailsModal(rendezVous) : null"
+                            [style.cursor]="isAdmin && rendezVous.etat === 'en attente' ? 'pointer' : 'default'">
+                            <span>{{ rendezVous.etat }}</span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="StatutClient">
+                    <mat-header-cell *matHeaderCellDef> Statut </mat-header-cell>
+                    <mat-cell *matCellDef="let rendezVous">
+                        <div [ngClass]="getStatusClass(rendezVous.etat)" class="status-container"
+                            (click)="isValidable && !isAdmin && rendezVous.etat === 'en attente' ? openCancelModal(rendezVous) : null"
+                            [style.cursor]="isAdmin && rendezVous.etat === 'en attente' ? 'pointer' : 'default'">
+                            <span>{{ rendezVous.etat }}</span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+                    <mat-cell *matCellDef="let rendezVous">
+                        <div *ngIf="!rendezVous.dateSuppression">
+                            <button mat-icon-button color="accent" (click)="openDetailsModal(rendezVous)">
+                                <mat-icon>visibility</mat-icon>
+                            </button>
+                            <button mat-icon-button color="primary" (click)="openEditModal(rendezVous)"
+                                *ngIf="isValidable && isClient && rendezVous.etat === 'en attente'">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Table Header & Row Definitions -->
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+
+            <!-- Pagination -->
+            <mat-paginator *ngIf="listeRendezVous && listeRendezVous.length > 5" [length]="listeRendezVous.length" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
+                (page)="onPaginateChange($event)">
+            </mat-paginator>
+        </ng-container>
+
+        <!-- Message si aucun rendez-vous -->
+        <ng-template #noDataMessage>
+            <p class="text-center text-muted">
+                {{ isValidable ? 'Aucune demande de rendez-vous en attente.' : 'Aucun historique de rendez-vous.' }}
+            </p>
+        </ng-template>
+
+    </mat-card-content>
+</mat-card>

@@ -1,0 +1,41 @@
+<mat-card class="cardWithShadow theme-card">
+    <mat-card-header>
+        <mat-card-title class="m-b-0"> {{ data.title }} </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="b-t-1">
+        <form [formGroup]="form">
+            <!-- Message d'erreur global -->
+            <div *ngIf="data.errorMessage" class="error-message" style="color: red; margin-bottom: 20px;">
+                {{ data.errorMessage }}
+            </div>
+
+            <div class="error-message" style="color: red; margin-bottom: 20px;">
+                {{ data.message }}
+            </div>
+
+            <!-- Champ Raison d'annulation -->
+            <div class="row">
+                <div class="col-12">
+                    <mat-label class="f-w-600 m-b-8 d-block">Raison d'annulation</mat-label>
+
+                    <mat-form-field appearance="outline" class="w-100" color="primary">
+                        <input matInput type="text" formControlName="raison" placeholder="Raison d'annulation" />
+
+                        <mat-error *ngIf="form.get('raison')?.invalid && form.get('raison')?.touched">
+                            Raison d'annulation est requise.
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <!-- Boutons -->
+            <div class="m-t-12 d-flex justify-content-end">
+                <button mat-stroked-button
+                    [ngStyle]="{ 'background-color': canConfirm() ? 'red' : 'lightcoral', 'color': 'white' }"
+                    class="m-r-8" (click)="confirmDelete()" [disabled]="form.invalid">Confirmer</button>
+                <button mat-flat-button color="primary" (click)="cancelDelete()">Annuler</button>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

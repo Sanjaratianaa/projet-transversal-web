@@ -1,0 +1,156 @@
+<div class="rendez-vous-intervention">
+    <main class="pageWrapper maxWidth">
+        <app-breadcrumb>
+            <div class="bg-white rounded p-20 m-b-30">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <h4 class="page-title m-0 f-s-18 f-w-600">Rendez-vous interventions</h4>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="d-flex align-items-center justify-content-lg-end">
+                            <mat-card-title class="mat-mdc-card-title m-b-0">
+                                <span
+                                    class="rounded p-x-8 p-y-2 text-primary bg-light-primary f-s-12 f-w-500">Interventions</span>
+                            </mat-card-title>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </app-breadcrumb>
+
+        <div class="row">
+            <div class="col-sm-6 col-lg-3">
+                <mat-card
+                    class="mat-mdc-card mdc-card shadow-none p-30 bg-light-primary text-center cursor-pointer rounded">
+                    <h3 class="f-s-24 text-primary f-w-500 m-b-4">{{ totalInterventions }}</h3>
+                    <h6 class="text-primary f-w-500 m-0 f-s-16">Total Interventions</h6>
+                </mat-card>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <mat-card
+                    class="mat-mdc-card mdc-card shadow-none p-30 bg-light-warning text-center cursor-pointer rounded">
+                    <h3 class="f-s-24 text-warning m-b-4 f-w-500">{{ interventionsInProgress }}</h3>
+                    <h6 class="text-warning f-w-500 m-0 f-s-16">En progression</h6>
+                </mat-card>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <mat-card
+                    class="mat-mdc-card mdc-card shadow-none p-30 bg-light-success text-center cursor-pointer rounded">
+                    <h3 class="f-s-24 text-success m-b-4 f-w-500">{{ interventionsOpen }}</h3>
+                    <h6 class="text-success f-w-500 m-0 f-s-16">Ouvert</h6>
+                </mat-card>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <mat-card
+                    class="mat-mdc-card mdc-card shadow-none p-30 bg-light-error text-center cursor-pointer rounded">
+                    <h3 class="f-s-24 text-error m-b-4 f-w-500">{{ interventionsClosed }}</h3>
+                    <h6 class="text-error f-w-500 m-0 f-s-16">Terminé</h6>
+                </mat-card>
+            </div>
+        </div>
+
+        <mat-card class="mat-mdc-card mdc-card cardWithShadow">
+            <mat-card-content class="mat-mdc-card-content">
+                <div class="row justify-content-between gap-16">
+                    <div class="col-sm-4">
+                        <mat-form-field appearance="outline" class="mat-mdc-form-field hide-hint">
+                            <input matInput placeholder="Search Interventions" />
+                            <mat-icon matSuffix>search</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Table -->
+        <mat-card class="mat-mdc-card mdc-card cardWithShadow">
+            <mat-card-content class="mat-mdc-card-content">
+                <div class="table-responsive">
+                    <table mat-table [dataSource]="dataSource" class="mat-mdc-table w-100 f-w-500 no-wrap" role="table">
+
+                        <!-- Client Column -->
+                        <ng-container matColumnDef="client">
+                            <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Client</th>
+                            <td mat-cell *matCellDef="let rendezVous">
+                                <div class="d-flex align-items-center">
+                                    <img alt="user" width="35" class="rounded-circle m-r-8"
+                                        src="{{ getImageUrl(rendezVous) }}">
+                                    <span class="f-w-600 f-s-16">{{ rendezVous.client.nom }} {{ rendezVous.client.prenom
+                                        }}</span>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <!-- Description Column -->
+                        <ng-container matColumnDef="description">
+                            <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Titre</th>
+                            <td mat-cell *matCellDef="let rendezVous">
+                                <h6 class="f-s-16 f-w-500 m-b-4">{{ rendezVous.voiture.numeroImmatriculation }}</h6>
+                                <span class="f-s-14 f-w-400 max-text d-block">{{ getDescription(rendezVous) }}</span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Status Column -->
+                        <ng-container matColumnDef="status">
+                            <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Status</th>
+                            <td mat-cell *matCellDef="let rendezVous">
+                                <span class="bg-light f-w-500 p-x-8 p-y-4 rounded-pill f-s-12"
+                                    [ngClass]="getStatusClass(rendezVous.etat)">
+                                    {{ rendezVous.etat }}
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Date Column -->
+                        <ng-container matColumnDef="date">
+                            <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Date</th>
+                            <td mat-cell *matCellDef="let rendezVous" class="f-s-14">
+                                {{ rendezVous.dateRendezVous ? (rendezVous.dateRendezVous | date:'dd/MM/yyyy') : '-- --'
+                                }}
+                            </td>
+                        </ng-container>
+
+                        <!-- Debut Column -->
+                        <ng-container matColumnDef="debut">
+                            <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Début</th>
+                            <td mat-cell *matCellDef="let rendezVous" class="f-s-14">
+                                {{ rendezVous.heureDebut ? (rendezVous.heureDebut | date:'HH:mm:ss') : '-- --' }}
+                            </td>
+                        </ng-container>
+
+                        <!-- Fin Column -->
+                        <ng-container matColumnDef="fin">
+                            <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Fin</th>
+                            <td mat-cell *matCellDef="let rendezVous" class="f-s-14">
+                                {{ rendezVous.heureFin ? (rendezVous.heureFin | date:'HH:mm:ss') : '-- --' }}
+                            </td>
+                        </ng-container>
+
+                        <!-- Action Column -->
+                        <ng-container matColumnDef="action">
+                            <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Action</th>
+                            <td mat-cell *matCellDef="let rendezVous" class="action-link">
+                                <ng-container *ngIf="rendezVous?.heureDebut">
+                                    <a class="m-r-10 cursor-pointer" (click)="onEditClick(rendezVous)"
+                                        aria-label="Edit">
+                                        <mat-icon>{{ isClient ? 'visibility' : 'edit'}}</mat-icon>
+                                    </a>
+                                </ng-container>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                            (click)="!isClient && onRowClick(row)" style="cursor: pointer;"></tr>
+                    </table>
+                </div>
+                <mat-paginator *ngIf="listeRendezVous && listeRendezVous.length > 5" [pageSizeOptions]="pageSizeOptions"
+                    showFirstLastButtons aria-label="Select page of interventions" [length]="totalInterventions"
+                    [pageSize]="pageSize" (page)="onPaginateChange($event)" [pageIndex]="currentPage">
+                </mat-paginator>
+
+            </mat-card-content>
+        </mat-card>
+
+    </main>
+</div>

@@ -1,0 +1,109 @@
+<!-- ============================================================== -->
+<!-- Simple four boxes Row -->
+<!-- ============================================================== -->
+<mat-card class="cardWithShadow">
+    <mat-card-content>
+      <mat-card-title>Mécaniciens</mat-card-title>
+      <!-- <mat-card-subtitle>This is test page</mat-card-subtitle> -->
+    </mat-card-content>
+  </mat-card>
+  
+  <!-- ============================================================== -->
+  <!-- Service Page Content -->
+  <!-- ============================================================== -->
+  
+  <!-- Ajout d'un nouvel employé -->
+  <mat-card class="cardWithShadow" *ngIf="isAdmin">
+    <mat-card-content>
+      <button mat-flat-button color="primary" class="m-r-8" (click)="openModal()">Ajouter un nouveau Mécanicien</button>
+    </mat-card-content>
+  </mat-card>
+  
+  
+  
+  <!-- ============================================================== -->
+  <!-- Service List -->
+  <!-- ============================================================== -->
+  <mat-card class="cardWithShadow">
+    <mat-card-content>
+      <mat-card-title>Liste des mécaniciens</mat-card-title>
+      <mat-table [dataSource]="paginatedUtilisateurs" matSort class="mat-elevation-z8">
+        <ng-container matColumnDef="Nom">
+          <mat-header-cell *matHeaderCellDef> Nom </mat-header-cell>
+          <mat-cell *matCellDef="let utilisateur"> {{ utilisateur.personne.nom }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Prenoms">
+          <mat-header-cell *matHeaderCellDef> Prenoms </mat-header-cell>
+          <mat-cell *matCellDef="let utilisateur"> {{ utilisateur.personne.prenom }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Email">
+          <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+          <mat-cell *matCellDef="let utilisateur"> {{ utilisateur.personne.email }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Date Naissance">
+          <mat-header-cell *matHeaderCellDef> Date de naissance </mat-header-cell>
+          <mat-cell *matCellDef="let utilisateur"> {{ utilisateur.personne.dateDeNaissance | date:'dd/MM/yyyy' }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Lieu Naissance">
+          <mat-header-cell *matHeaderCellDef> Lieu de naissance </mat-header-cell>
+          <mat-cell *matCellDef="let utilisateur"> {{ utilisateur.personne.lieuDeNaissance }} </mat-cell>
+        </ng-container>
+        
+        <ng-container matColumnDef="Date Embauche">
+          <mat-header-cell *matHeaderCellDef> Date d'embauche </mat-header-cell>
+          <mat-cell *matCellDef="let utilisateur"> {{ utilisateur.dateEmbauche ? (utilisateur.dateEmbauche | date:'dd/MM/yyyy') : '-- --' }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Matricule">
+          <mat-header-cell *matHeaderCellDef> Matricule </mat-header-cell>
+          <mat-cell *matCellDef="let utilisateur"> {{ utilisateur.matricule }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Date Suppression">
+          <mat-header-cell *matHeaderCellDef> Date Suppression </mat-header-cell>
+          <mat-cell *matCellDef="let utilisateur"> 
+            {{ utilisateur.dateSuppression ? (utilisateur.dateSuppression | date:'dd/MM/yyyy hh:ss:mm') : '-- --' }} 
+          </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="Statut">
+          <mat-header-cell *matHeaderCellDef> Statut </mat-header-cell>
+          <mat-cell *matCellDef="let utilisateur">
+            <div [ngClass]="{'inactive-status': utilisateur.dateSuppression, 'active-status': !utilisateur.dateSuppression}" 
+                 class="status-container">
+              <!-- Si la utilisateur.personne a une date de suppression, elle est inactive -->
+              <span>{{ utilisateur.etat }}</span>
+            </div>
+          </mat-cell>
+        </ng-container>
+        
+        
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+          <mat-cell *matCellDef="let utilisateur">
+            <div *ngIf="!utilisateur.dateSuppression">
+              <button mat-icon-button color="primary" (click)="editUtilisateur(utilisateur)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="openDeleteConfirmation(utilisateur)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </mat-cell>
+        </ng-container>
+  
+        <!-- Table Header & Row Definitions -->
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+  
+      <!-- Pagination -->
+      <mat-paginator *ngIf="utilisateurs && utilisateurs.length > 5" [length]="utilisateurs.length" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
+        (page)="onPaginateChange($event)">
+      </mat-paginator>
+    </mat-card-content>
+  </mat-card>

@@ -1,0 +1,120 @@
+<!-- ============================================================== -->
+<!-- Simple four boxes Row -->
+<!-- ============================================================== -->
+<mat-card class="cardWithShadow">
+    <mat-card-content>
+        <mat-card-title>Congés</mat-card-title>
+        <!-- <mat-card-subtitle>This is test page</mat-card-subtitle> -->
+    </mat-card-content>
+</mat-card>
+
+<!-- ============================================================== -->
+<!-- Service List -->
+<!-- ============================================================== -->
+<mat-card class="cardWithShadow">
+    <mat-card-content>
+        <mat-card-title>{{ isValidable ? 'Liste des demandes de Congés en attente' : 'Historique des Congés'
+            }} </mat-card-title>
+        <ng-container *ngIf="paginatedConges.length > 0; else noDataMessage">
+            <mat-table [dataSource]="paginatedConges" matSort class="mat-elevation-z8">
+                <ng-container matColumnDef="Date et heure demande">
+                    <mat-header-cell *matHeaderCellDef> Date et heure demande </mat-header-cell>
+                    <mat-cell *matCellDef="let conge"> {{ conge.dateHeureDemande | date:'dd/MM/yyyy HH:mm:ss'
+                        }}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="mecanicien">
+                    <mat-header-cell *matHeaderCellDef> Mécanicien </mat-header-cell>
+                    <mat-cell *matCellDef="let conge">
+                        {{ conge.mecanicien.nom }} {{ conge.mecanicien.prenom }}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="dateDebut">
+                    <mat-header-cell *matHeaderCellDef> Date et heure debut du conge </mat-header-cell>
+                    <mat-cell *matCellDef="let conge"> {{ conge.dateHeureDebut | date:'dd/MM/yyyy HH:mm:ss' }}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="dateFin">
+                    <mat-header-cell *matHeaderCellDef> Date et heure fin du conge </mat-header-cell>
+                    <mat-cell *matCellDef="let conge"> {{ conge.dateHeureFin | date:'dd/MM/yyyy HH:mm:ss' }}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Raison">
+                    <mat-header-cell *matHeaderCellDef>Raison </mat-header-cell>
+                    <mat-cell *matCellDef="let conge">
+                        {{ conge.raison }}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Validateur">
+                    <mat-header-cell *matHeaderCellDef> Validateur </mat-header-cell>
+                    <mat-cell *matCellDef="let conge">
+                        {{ conge.validateur?.nom || '--' }} {{ conge.validateur?.prenom || '--' }}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Remarque">
+                    <mat-header-cell *matHeaderCellDef> Remarque </mat-header-cell>
+                    <mat-cell *matCellDef="let conge">
+                        {{ conge.remarque || '--' }}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Statut">
+                    <mat-header-cell *matHeaderCellDef> Statut </mat-header-cell>
+                    <mat-cell *matCellDef="let conge">
+                        <div [ngClass]="getStatusClass(conge.etat)" class="status-container"
+                            (click)="isValidable && isAdmin && conge.etat === 'en attente' ? openAnswerDetailsModal(conge) : null"
+                            [style.cursor]="isAdmin && conge.etat === 'en attente' ? 'pointer' : 'default'">
+                            <span>{{ conge.etat }}</span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="StatutMecanicien">
+                    <mat-header-cell *matHeaderCellDef> Statut </mat-header-cell>
+                    <mat-cell *matCellDef="let conge">
+                        <div [ngClass]="getStatusClass(conge.etat)" class="status-container"
+                            (click)="isValidable && isMecanicien && conge.etat === 'en attente' ? openCancelModal(conge) : null"
+                            [style.cursor]="isAdmin && conge.etat === 'en attente' ? 'pointer' : 'default'">
+                            <span>{{ conge.etat }}</span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+                    <mat-cell *matCellDef="let conge">
+                        <div *ngIf="!conge.dateSuppression">
+                            <button mat-icon-button color="primary" (click)="openEditModal(conge)"
+                                *ngIf="isValidable && isMecanicien && conge.etat === 'en attente'">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Table Header & Row Definitions -->
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+
+            <!-- Pagination -->
+            <mat-paginator *ngIf="conges && conges.length > 5" [length]="conges.length" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
+                (page)="onPaginateChange($event)">
+            </mat-paginator>
+        </ng-container>
+
+        <!-- Message si aucun conge -->
+        <ng-template #noDataMessage>
+            <p class="text-center text-muted">
+                {{ isValidable ? 'Aucune demande de conge en attente.' : 'Aucun historique de conge.' }}
+            </p>
+        </ng-template>
+
+    </mat-card-content>
+</mat-card>

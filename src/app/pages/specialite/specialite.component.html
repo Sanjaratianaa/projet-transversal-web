@@ -1,0 +1,110 @@
+<!-- ============================================================== -->
+<!-- Simple four boxes Row -->
+<!-- ============================================================== -->
+<mat-card class="cardWithShadow">
+  <mat-card-content>
+    <mat-card-title>Liste des spécialités des mécaniciens</mat-card-title>
+    <!-- <mat-card-subtitle>This is test page</mat-card-subtitle> -->
+  </mat-card-content>
+</mat-card>
+
+<!-- ============================================================== -->
+<!-- Service Page Content -->
+<!-- ============================================================== -->
+
+<!-- Ajout d'un nouvel employé -->
+<mat-card class="cardWithShadow" *ngIf="isAdmin">
+  <mat-card-content>
+    <button mat-flat-button color="primary" class="m-r-8" (click)="openModal()">Ajouter une nouvelle spécialité</button>
+  </mat-card-content>
+</mat-card>
+
+
+
+<!-- ============================================================== -->
+<!-- Service List -->
+<!-- ============================================================== -->
+<mat-card class="cardWithShadow">
+  <mat-card-content>
+    <mat-card-title>Liste des spécialités</mat-card-title>
+    <mat-table [dataSource]="paginatedSpecialites" matSort class="mat-elevation-z8">
+      <ng-container matColumnDef="Service">
+        <mat-header-cell *matHeaderCellDef> Service </mat-header-cell>
+        <mat-cell *matCellDef="let specialite"> {{ specialite.sousService.service.libelle }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Specialite">
+        <mat-header-cell *matHeaderCellDef>Specialité </mat-header-cell>
+        <mat-cell *matCellDef="let specialite"> {{ specialite.sousService.libelle }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Mecanicien">
+        <mat-header-cell *matHeaderCellDef> Mécanicien </mat-header-cell>
+        <mat-cell *matCellDef="let specialite"> {{ specialite.mecanicien.personne.prenom }} {{
+          specialite.mecanicien.personne.nom }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Date d'enregistrement">
+        <mat-header-cell *matHeaderCellDef>Date d'enregistrement</mat-header-cell>
+        <mat-cell *matCellDef="let specialite"> {{ specialite.dateEnregistrement | date:'dd/MM/yyyy hh:mm:ss' }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Manager">
+        <mat-header-cell *matHeaderCellDef> Manager </mat-header-cell>
+        <mat-cell *matCellDef="let specialite">
+          {{ specialite.manager?.personne.nom }} {{ specialite.manager?.personne.prenom }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Date suppression">
+        <mat-header-cell *matHeaderCellDef> Date de suppression </mat-header-cell>
+        <mat-cell *matCellDef="let specialite"> 
+          {{ specialite.dateSuppression ? (specialite.dateSuppression | date:'dd/MM/yyyy hh:mm:ss') : '-- --' }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Manager Suppression">
+        <mat-header-cell *matHeaderCellDef> Manager Suppression </mat-header-cell>
+        <mat-cell *matCellDef="let specialite">
+          {{ specialite.managerSuppression?.personne.nom || '--' }} {{
+            specialite.managerSuppression?.personne.prenom || '--' }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Statut">
+        <mat-header-cell *matHeaderCellDef> Statut </mat-header-cell>
+        <mat-cell *matCellDef="let specialite">
+          <div [ngClass]="{'inactive-status': specialite.dateSuppression, 'active-status': !specialite.dateSuppression}" 
+               class="status-container">
+            <!-- Si la specialite a une date de suppression, elle est inactive -->
+            <span>{{ specialite.etat }}</span>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+        <mat-cell *matCellDef="let specialite">
+          <div *ngIf="!specialite.dateSuppression">
+            <button mat-icon-button color="primary" (click)="editSpecialite(specialite)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="openDeleteConfirmation(specialite)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Table Header & Row Definitions -->
+      <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: columns;"></mat-row>
+    </mat-table>
+
+    <!-- Pagination -->
+    <mat-paginator *ngIf="specialites && specialites.length > 5" [length]="specialites.length" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
+      (page)="onPaginateChange($event)">
+    </mat-paginator>
+  </mat-card-content>
+</mat-card>
