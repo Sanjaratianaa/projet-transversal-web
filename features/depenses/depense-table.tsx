@@ -25,7 +25,7 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon, EditIcon, TrashIcon, EyeIcon } from "lucide-react"
 import type { Revenue, RevenueFormData } from "@/types/revenue"
 import { formatCurrency, REVENUE_TYPES, REVENUE_FREQUENCIES } from "@/lib/revenue-utils"
-import RevenueFormDialog from "./revenue-form-dialog"
+import RevenueFormDialog from "./depense-form-dialog"
 
 interface RevenueTableProps {
   revenues: Revenue[]

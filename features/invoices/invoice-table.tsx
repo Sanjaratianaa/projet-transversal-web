@@ -119,37 +119,41 @@ export default function InvoiceTable({
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                            <MoreHorizontalIcon className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem className="cursor-pointer">
-                            <EyeIcon className="h-4 w-4 mr-2" />
-                            Voir les détails
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <InvoiceFormDialog
-                            invoice={invoice}
-                            onSubmit={(data) => onUpdateInvoice(invoice.id, data)}
-                            trigger={
-                              <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="cursor-pointer">
-                                <EditIcon className="h-4 w-4 mr-2" />
-                                Modifier
-                              </DropdownMenuItem>
-                            }
-                          />
-                          <DropdownMenuItem
-                            onClick={() => handleDeleteClick(invoice)}
-                            className="cursor-pointer text-destructive focus:text-destructive"
-                          >
-                            <TrashIcon className="h-4 w-4 mr-2" />
-                            Supprimer
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                      <div className="flex flex-col gap-2">
+                        {/* Voir les détails */}
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="justify-start"
+                          onClick={() => console.log("Voir", invoice.id)}
+                        >
+                          <EyeIcon className="h-4 w-4 mr-2" />
+                          Voir les détails
+                        </Button>
+
+                        {/* Modifier */}
+                        <InvoiceFormDialog
+                          invoice={invoice}
+                          onSubmit={(data) => onUpdateInvoice(invoice.id, data)}
+                          trigger={
+                            <Button variant="ghost" size="sm" className="justify-start">
+                              <EditIcon className="h-4 w-4 mr-2" />
+                              Modifier
+                            </Button>
+                          }
+                        />
+
+                        {/* Supprimer */}
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="justify-start text-destructive hover:bg-destructive/10"
+                          onClick={() => handleDeleteClick(invoice)}
+                        >
+                          <TrashIcon className="h-4 w-4 mr-2" />
+                          Supprimer
+                        </Button>
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}

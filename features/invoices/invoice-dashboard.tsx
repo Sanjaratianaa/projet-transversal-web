@@ -26,6 +26,8 @@ export default function InvoiceDashboard() {
     setCurrentPage,
   } = useInvoices()
 
+  console.log(invoices)
+
   const handleAddInvoice = (data: InvoiceFormData) => {
     addInvoice(data)
   }
@@ -55,12 +57,12 @@ export default function InvoiceDashboard() {
               Scanner
             </Button>
           </OCRScannerDialog>
-          <InvoiceFormDialog onSubmit={handleAddInvoice}>
+          {/* <InvoiceFormDialog onSubmit={handleAddInvoice}>
             <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
               <PlusIcon className="h-4 w-4 mr-2" />
               Nouvelle facture
             </Button>
-          </InvoiceFormDialog>
+          </InvoiceFormDialog> */}
         </div>
       </div>
 

@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { FileTextIcon, UserIcon, HomeIcon, CoinsIcon } from "lucide-react"
+import { FileTextIcon, UserIcon, HomeIcon, CoinsIcon, DollarSign } from "lucide-react"
 
 export default function Navbar() {
   return (
@@ -35,6 +35,12 @@ export default function Navbar() {
               <Button variant="ghost" className="flex items-center gap-2">
                 <CoinsIcon className="h-4 w-4" />
                 Mes Revenus
+              </Button>
+            </Link>
+            <Link href="/depenses">
+              <Button variant="ghost" className="flex items-center gap-2">
+                <DollarSign className="h-4 w-4" />
+                Mes Dépenses
               </Button>
             </Link>
             <Link href="/auth">
