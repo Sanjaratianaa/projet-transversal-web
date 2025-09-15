@@ -1,0 +1,624 @@
+**************************************************************************************
+    Crée-moi une page d’authentification et inscription pour mon projet de gestion de factures et dépenses.
+
+    ⚡ Exigences fonctionnelles :
+
+    L’utilisateur peut créer un compte (nom, email, téléphone, mot de passe).
+
+    L’utilisateur peut se connecter (email + mot de passe).
+
+    Ajoute aussi la possibilité de connexion via Google et Facebook (boutons séparés).
+
+    Validation basique des champs (email valide, mot de passe ≥ 6 caractères).
+
+    Messages d’erreur clairs si un champ est incorrect.
+
+    Prévoir un lien "Mot de passe oublié ?".
+
+    🎨 Thème design :
+
+    Utiliser une palette jaune et vert comme couleurs principales (exemple : jaune = #FFD700, vert = #228B22).
+
+    Design moderne et responsive (desktop + mobile).
+
+    Boutons arrondis, ombres légères, champs input stylés.
+
+    Mettre un petit logo fictif “MesFactures”.
+
+    🛠️ Tech stack :
+
+    React avec Tailwind CSS.
+
+    Prévois deux onglets : Connexion et Inscription dans une même page.
+
+    Organise le code en composant propre (LoginForm, RegisterForm).
+
+    👉 Objectif : Obtenir un code complet, prêt à coller dans mon projet React/Next.js pour avoir une page Auth moderne, avec thème jaune & vert.
+
+
+***********************************************************************************************************
+Prompt IA – Gestion des Factures (basé sur ton Excel)
+
+    Crée-moi une page de gestion des factures en React + Tailwind CSS pour mon projet de gestion financière.
+
+    ⚡ Fonctionnalités à implémenter (basées sur mon cahier des charges) :
+
+    CRUD Factures
+
+    Formulaire d’ajout de facture (fournisseur, type [électricité, eau, internet], montant, date d’émission, date d’échéance, statut [payée, en attente]).
+
+    Validation côté front (montant > 0, dates valides).
+
+    Rafraîchissement automatique de la liste après ajout/modification/suppression.
+
+    Historique & filtrage
+
+    Tableau interactif des factures avec pagination.
+
+    Filtres (par type de facture, statut, période).
+
+    Bouton d’export PDF / Excel de la liste affichée.
+
+    Mise à jour en direct de la liste après action.
+
+    Scan facture OCR
+
+    Module de capture (photo ou caméra) pour importer une facture.
+
+    Extraction automatique du texte (fournisseur, montant, dates).
+
+    Proposition d’intégration auto de la facture scannée comme dépense.
+
+    🎨 Thème UI :
+
+    Utiliser une palette jaune (#FFD700) et vert (#228B22).
+
+    Design moderne, responsive (desktop + mobile).
+
+    Statut affiché avec badges colorés (vert = payée, jaune = en attente, rouge = en retard).
+
+    Boutons arrondis, cartes stylées, ombres douces.
+
+    🛠️ Stack technique :
+
+    React + Tailwind CSS.
+
+    Composants séparés : FactureForm, FactureTable, FactureFilters, FactureOCRUploader.
+
+    Prévoir l’intégration future avec une API backend (CRUD factures).
+
+    Pour l’OCR : utiliser une librairie JS comme Tesseract.js (mock si besoin).
+
+    👉 Objectif : Générer un code complet et réutilisable, avec un CRUD factures, historique filtrable/exportable et intégration OCR (photo → texte → dépense).
+
+***********************************************************
+    Réorganise le code de mon projet React/Next.js sans modifier la logique existante.    
+    ⚡ Règles d’organisation :    Tous les composants liés à l’authentification doivent être regroupés dans un dossier :    
+        /features/auth/ → LoginForm, RegisterForm, AuthPage, etc.    
+    Tous les composants liés aux factures doivent être regroupés dans un dossier :   
+        /features/factures/ → FactureForm, FactureTable, FactureFilters, FactureOCRUploader, FacturePage, etc.    
+        Les composants réutilisables (Navbar, Sidebar, Button, Card, etc.) doivent être placés dans :    /components/shared/.    
+        Chaque page doit importer ses composants depuis le dossier correspondant.    
+        Les routes doivent rester inchangées :    /auth → AuthPage.    /factures → FacturePage.    
+        👉 Objectif : Obtenir une structure de projet claire et modulaire, avec tous les composants regroupés par fonctionnalités dans leurs propres dossiers.
+
+**************************************************************
+    Dans mon projet React/Next.js, explique-moi quelle URL utiliser pour la navigation entre mes pages principales.        
+    ⚡ Pages existantes :        
+        /auth → Page d’authentification et inscription (login/register).        
+        /factures → Page de gestion des factures (CRUD, liste, OCR).        
+    ⚡ Demande :        
+        Indique-moi clairement quelle route/URL je dois utiliser si je veux :        
+        Ajouter un bouton ou un lien “Se connecter” qui me redirige vers la page login.        
+        Ajouter un bouton ou un lien “Voir mes factures” qui me redirige vers la page factures.        
+        Montre-moi un exemple de code React avec un <Link> (si j’utilise React Router) ou un <Link> de Next.js, pour naviguer vers ces deux pages.        
+    👉 Objectif : Pouvoir revenir facilement à la page login (/auth) ou à la page factures (/factures) depuis n’importe où dans mon app. 
+
+
+***************************************************************
+    Veuillez mettre à jour le projet en effectuant les modifications suivantes :
+        Changer tous les montants affichés afin qu’ils soient exprimés en Ariary (Ar), la monnaie malagasy.
+        Adapter le code de navigation pour utiliser correctement les URLs définies précédemment :
+            /auth pour la page de connexion/inscription.
+            /factures pour la page de gestion des factures.
+
+
+***************************************************************
+Veuillez utiliser le même logo dans la page de connexion, celui avec les initiales “MF” (MesFactures) pour la page d'accueils.
+
+***************************************************************
+    Ajoute à mon projet existant une interface de gestion des revenus avec deux sections distinctes mais sur la même page, en utilisant exactement les mêmes styles et composants CSS que l'application actuelle :
+
+    1. Gestion des Sources de Revenus (CRUD complet) :
+    Tableau affichant : Nom, Type (fixe/variable), Montant, Fréquence (mensuelle/annuelle/ponctuelle), Actions
+
+    Bouton "Ajouter une source" ouvrant un modal avec formulaire contenant :
+
+    Champ "Nom" (texte)
+
+    Sélecteur "Type" (fixe, variable)
+
+    Champ "Montant" (nombre)
+
+    Sélecteur "Fréquence" (mensuelle, annuelle, ponctuelle)
+
+    Nouveau : Case à cocher "Appliquer un plafond d'utilisation"
+
+    Si cochée : champ "Plafond mensuel" (en pourcentage) avec tooltip d'explication
+
+    Actions : Modifier (icône crayon) / Supprimer (icône poubelle) avec confirmation
+
+    2. Section dédiée au Plafond Global d'Utilisation :
+    Carte avec titre "Plafond Global Mensuel"
+
+    Input avec label "Définir le plafond général (€)"
+
+    Badge affichant le plafond actuel
+
+    Barre de progression montrant : Utilisation / Plafond
+
+    Message d'avertissement si dépassement (style alert existant)
+
+    Consignes techniques :
+
+    Utiliser les composants shadcn/ui déjà existants (Table, Card, Button, Input, Progress, Modal, Checkbox)
+
+    Réutiliser strictement les mêmes couleurs, espacements et styles Tailwind CSS
+
+    États React pour gérer les modaux et les données des formulaires
+
+    Intégration fluide avec la structure existante du projet
+
+    Responsive design conforme au reste de l'application
+
+    Objectif : Une intégration visuelle et technique parfaite sans duplication de styles.
+
+*****************************************************************
+veuillez ajouter une section filtre pour la gestion des revenus, comme le filtres dans le gestion des factures
+
+***************************************************************
+Prompt IA – Gestion des Dépenses (modifié)
+
+    Crée-moi une page complète de gestion des dépenses en React + Tailwind CSS pour mon projet de gestion financière.
+
+    ⚡ Fonctionnalités à implémenter (basées sur mon cahier des charges) :
+
+    1. Dépenses fixes et variables (CRUD)
+
+    Formulaire pour ajouter une dépense avec les champs :
+
+    description
+
+    catégorie
+
+    montant
+
+    type : fixe ou variable
+
+    fréquence : unique, mensuelle, annuelle, hebdomadaire
+
+    date
+
+    Modifier et supprimer une dépense existante.
+
+    Rafraîchissement automatique de la liste après chaque action CRUD.
+
+    2. Alerte dépassement budget
+
+    Détection automatique lorsqu’une dépense dépasse le budget défini.
+
+    Notification simple (pop-up ou alerte visuelle).
+
+    Synchronisation des notifications (push, email ou SMS si paramétré).
+
+    3. Visualisation et analyses
+
+    Graphiques interactifs (ex : courbes ou barres) pour comparer les dépenses mensuelles et annuelles.
+
+    Afficher clairement les alertes de dépassement sur le graphique.
+
+    Calcul et mise à jour dynamique des totaux et comparaisons.
+
+    4. Catégorisation intelligente
+
+    Liste des dépenses triées par catégories (alimentation, transport, loisirs, etc.).
+
+    Ajout d’une IA simple pour proposer automatiquement une catégorie selon la description de la dépense.
+
+    Mise à jour et réassignation de catégorie possible par l’utilisateur.
+
+    🎨 Thème UI :
+
+    Palette jaune (#FFD700) et vert (#228B22).
+
+    Design moderne et responsive (desktop + mobile).
+
+    Badges colorés pour distinguer :
+
+    fixe vs variable
+
+    mensuelle, annuelle, hebdomadaire
+
+    Graphiques stylés avec légendes claires.
+
+    🛠️ Stack technique :
+
+    React + Tailwind CSS.
+
+    Composants séparés :
+
+    DepenseForm (ajout/modification).
+
+    DepenseTable (liste CRUD).
+
+    DepenseChart (graphiques).
+
+    BudgetAlert (notifications dépassement).
+
+    DepenseCategoryAI (suggestion IA pour catégories).
+
+    Prévoir l’intégration future avec une API backend (CRUD dépenses + IA).
+
+    👉 Objectif : Générer un code complet et modulaire, avec CRUD des dépenses, gestion des fréquences (unique, mensuelle, annuelle, hebdomadaire),
+    alertes budget, visualisation (graphique), et catégorisation intelligente des dépenses.
+
+
+**********************************************************************************
+Prompt IA – Gestion des Prêts
+
+    Crée-moi une page complète de gestion des prêts en React + Tailwind CSS pour mon projet de gestion financière.
+
+    ⚡ Fonctionnalités à implémenter (basées sur mon cahier des charges) :
+
+    1. CRUD des prêts
+
+    Formulaire pour ajouter un prêt (créancier, montant, taux d’intérêt, durée, date de début).
+
+    Modifier et supprimer un prêt existant.
+
+    Calcul automatique des échéances (mensualités, montant total à rembourser).
+
+    Notification de remboursement (alerte quand une échéance arrive).
+
+    2. Simulation de prêt
+
+    Formulaire de simulation (montant, durée, taux).
+
+    Calcul automatique des échéances simulées.
+
+    Sauvegarde de la simulation pour comparaison.
+
+    Visualisation graphique (ex : barres ou camembert) comparant différents scénarios.
+
+    Scénarios prédéfinis : 6 mois, 12 mois, taux variable.
+
+    Mise à jour dynamique des résultats.
+
+    3. Historique des prêts
+
+    Liste de tous les prêts passés et en cours.
+
+    Tri et filtres (par statut : payé, en cours, en retard).
+
+    Mise à jour dynamique après chaque remboursement.
+
+    4. Calendrier de remboursement
+
+    Vue calendrier (Web & Mobile) avec toutes les échéances.
+
+    Notifications automatiques avant chaque échéance (pop-up / push / email).
+
+    Synchronisation entre Web et Mobile pour garder les échéances à jour.
+
+    🎨 Thème UI :
+
+    Palette jaune (#FFD700) et vert (#228B22).
+
+    Design moderne et responsive (desktop + mobile).
+
+    Badges colorés pour distinguer prêts en cours / payés / en retard.
+
+    Graphiques interactifs et calendrier clair.
+
+    🛠️ Stack technique :
+
+    React + Tailwind CSS.
+
+    Composants séparés :
+
+    PretForm (ajout/modification).
+
+    PretTable (liste & historique).
+
+    PretSimulation (calcul + sauvegarde + scénarios).
+
+    PretChart (visualisation graphique comparatif).
+
+    PretCalendar (calendrier échéances + notifications).
+
+    Prévoir l’intégration future avec une API backend (CRUD prêts + notifications).
+
+    👉 Objectif : Générer un code complet et modulaire, avec gestion des prêts (CRUD), simulation, historique, et calendrier avec notifications.
+
+
+***********************************************************************************************
+Prompt IA – Gestion des finances & recommandations
+
+    Crée-moi une page complète de gestion des finances et recommandations en React + Tailwind CSS pour mon projet de gestion financière.
+
+    ⚡ Fonctionnalités à implémenter (basées sur mon cahier des charges) :
+
+    1. Objectifs financiers
+
+    Gestion % d’épargne :
+
+    Interface permettant de définir un pourcentage fixe de revenu à mettre de côté.
+
+    Répartition automatique dans les différents objectifs (ex : moto, études, maison).
+
+    Mise à jour dynamique en fonction des revenus/dépenses.
+
+    Simulation d’épargne :
+
+    Progression graphique (barre ou cercle) pour montrer l’évolution vers l’objectif.
+
+    Planification automatique (ex : “250 000 Ar/mois pour atteindre ton objectif en 12 mois”).
+
+    Mise à jour en temps réel quand l’utilisateur ajoute de nouvelles contributions.
+
+    2. Recommandations personnalisées
+
+    Générer des rapports et tableaux pour l’utilisateur (dépenses par catégorie, évolution épargne).
+
+    Fournir des conseils personnalisés :
+
+    Analyse des habitudes (ex : “Tu dépenses 20 % de plus en loisirs ce mois-ci”).
+
+    Suggestions d’économies (ex : “Réduis ton budget internet de 10 %”).
+
+    Réallocation intelligente (ex : “Tu pourrais déplacer 15 000 Ar de ton budget loisirs vers ton épargne moto”).
+
+    Mise à jour régulière des propositions selon l’historique.
+
+    Visualisation simple des suggestions (cartes ou encadrés colorés).
+
+    Analyse historique avec tendances.
+
+    Synchronisation entre Web et Mobile pour recevoir les recommandations.
+
+    🎨 Thème UI :
+
+    Palette jaune (#FFD700) et vert (#228B22).
+
+    Graphiques modernes et interactifs (barres, camemberts, jauges).
+
+    Badges colorés pour indiquer les recommandations (ex : rouge = attention, vert = positif).
+
+    Responsive (desktop + mobile).
+
+    🛠️ Stack technique :
+
+    React + Tailwind CSS.
+
+    Composants séparés :
+
+    ObjectifForm (ajout d’objectif).
+
+    EpargneProgressChart (progression épargne).
+
+    EpargnePlanner (planification automatique).
+
+    RecommandationsTable (rapports + suggestions).
+
+    RecommandationsAI (analyse des habitudes + affichage suggestions).
+
+    Prévoir l’intégration future avec une API backend (IA + historique des dépenses).
+
+    👉 Objectif : Générer un code complet et modulaire, avec gestion d’objectifs d’épargne, visualisation graphique, planification automatique et recommandations intelligentes basées sur les habitudes.
+
+*******************************************************************
+Prompt IA – Gestion des Notifications & Automatisations
+
+    Crée-moi un module complet de gestion des notifications et automatisations en React + Tailwind CSS pour mon projet de gestion financière.
+
+    ⚡ Fonctionnalités à implémenter (basées sur mon cahier des charges) :
+
+    1. Rappels et alertes
+
+    Notifications factures/dépenses/prêts :
+
+    Affichage sous forme de pop-up ou push (ex : “Votre facture JIRAMA est due demain”).
+
+    Badges colorés selon l’urgence (vert = payé, jaune = bientôt dû, rouge = en retard).
+
+    Détection automatique des échéances :
+
+    Vérifier les dates de factures, prêts et dépenses récurrentes.
+
+    Générer des rappels automatiquement.
+
+    Envoi externe :
+
+    Prévoir l’intégration pour envoi d’email ou notification mobile (mock API si nécessaire).
+
+    2. Import / Export
+
+    Import CSV ou API bancaire :
+
+    Permettre d’importer un relevé (CSV) ou via une API bancaire.
+
+    Mapper automatiquement les données importées aux dépenses/factures.
+
+    Export PDF/Excel :
+
+    Exporter l’historique des notifications ou la liste des échéances.
+
+    Design lisible avec couleurs jaunes et vertes.
+
+    Traitement et mise à jour :
+
+    Vérification des doublons à l’import.
+
+    Mise à jour automatique de la liste des dépenses/factures après import.
+
+    🎨 Thème UI :
+
+    Palette jaune (#FFD700) et vert (#228B22).
+
+    Interface moderne et responsive (desktop + mobile).
+
+    Notifications sous forme de cartes animées ou modales pop-up.
+
+    Boutons arrondis, icônes claires (cloche, enveloppe, calendrier).
+
+    🛠️ Stack technique :
+
+    React + Tailwind CSS.
+
+    Composants séparés :
+
+    NotificationPopup (pop-up ou push UI).
+
+    NotificationScheduler (détection échéances).
+
+    NotificationSender (mock envoi email/push).
+
+    ImportExportModule (import CSV/API, export PDF/Excel).
+
+    NotificationList (historique des rappels envoyés).
+
+    Prévoir l’intégration future avec une API backend pour stockage et envoi réel.
+
+    👉 Objectif : Générer un code modulaire et prêt à l’emploi, qui gère les rappels/alertes, permet l’import/export de données, et affiche les notifications de manière moderne et intuitive.
+
+*****************************************************************************
+Prompt IA – Gestion des Tableaux de Bord
+
+    Crée-moi une page de tableau de bord (Dashboard) en React + Tailwind CSS pour mon projet de gestion financière.
+
+    ⚡ Fonctionnalités à implémenter (basées sur mon cahier des charges) :
+
+    1. Dashboard global analyse
+
+    Graphiques interactifs : revenus, dépenses, objectifs, épargne, prêts.
+
+    Filtres et comparaisons : par période (mensuel, trimestriel, annuel), par catégorie (loisirs, logement, scolarité, etc.).
+
+    Intégration data : récupérer les données des modules existants (factures, dépenses, revenus, prêts, objectifs).
+
+    2. Prévisions et tendances
+
+    Graphiques prévisionnels : projections des revenus et dépenses sur plusieurs mois.
+
+    Mise en évidence des opportunités ou anomalies (par ex : pic de dépense inattendu).
+
+    Algorithmes de prédiction (mock ou modèle simple) pour estimer les tendances (dépenses moyennes, factures futures, capacité d’épargne).
+
+    Intégration backend → frontend pour récupérer les résultats calculés.
+
+    3. Détection des anomalies
+
+    Alerte utilisateur si une dépense sort de l’ordinaire (ex : 200 % de plus en transport ce mois-ci).
+
+    Algorithme ML simple (mock possible) pour analyser les anomalies dans les dépenses.
+
+    Synchronisation entre Web et Mobile pour afficher les anomalies détectées partout.
+
+    🎨 Thème UI :
+
+    Palette jaune (#FFD700) et vert (#228B22).
+
+    Design moderne et responsive.
+
+    Graphiques interactifs (barres, lignes, camemberts, jauges).
+
+    Notifications/alertes mises en avant avec badges colorés (vert = OK, rouge = anomalie, orange = attention).
+
+    🛠️ Stack technique :
+
+    React + Tailwind CSS.
+
+    Librairie de graphiques : Recharts ou Chart.js.
+
+    Composants séparés :
+
+    DashboardPage (vue principale).
+
+    RevenueChart, ExpenseChart, SavingsChart, LoanChart.
+
+    ForecastChart (prévisions).
+
+    AnomalyAlert (affichage des anomalies).
+
+    DashboardFilters (filtres et comparaisons).
+
+    Prévoir l’intégration future avec une API backend pour prévisions/anomalies ML.
+
+    👉 Objectif : Générer un dashboard complet et interactif, qui centralise les analyses financières, propose des prévisions, et alerte sur les anomalies de dépenses/revenus.
+
+**************************************************************************
+Prompt IA – Gamification (Défis & Récompenses)
+
+    Crée-moi un module de gamification en React + Tailwind CSS pour mon projet de gestion financière.
+
+    ⚡ Fonctionnalités à implémenter (basées sur mon cahier des charges) :
+
+    1. Interface motivationnelle
+
+    Une section “Défis & Récompenses” dans l’application.
+
+    Afficher les défis en cours (ex : “Économiser 100 000 Ar ce mois-ci”, “Ne pas dépasser 50 000 Ar en loisirs”).
+
+    Suivi de progression avec barres ou jauges visuelles.
+
+    Message motivant quand l’utilisateur atteint un palier.
+
+    2. Gestion des badges
+
+    Système de badges virtuels (bronze, argent, or, diamant).
+
+    Attribution automatique selon les performances (ex : badge “Économe” quand l’utilisateur respecte son budget 3 mois d’affilée).
+
+    Galerie des badges obtenus et des badges à débloquer.
+
+    3. Intégration aux objectifs financiers
+
+    Lier les défis aux objectifs financiers définis (ex : si l’utilisateur a un objectif moto, créer un défi “économiser 250 000 Ar/mois”).
+
+    Quand l’objectif progresse, mettre à jour le défi en temps réel.
+
+    Récompense (badge ou message motivant) quand l’objectif est atteint.
+
+    🎨 Thème UI :
+
+    Palette jaune (#FFD700) et vert (#228B22).
+
+    Design motivant, moderne, responsive.
+
+    Cartes interactives pour chaque défi.
+
+    Badges affichés avec couleurs et icônes stylées.
+
+    🛠️ Stack technique :
+
+    React + Tailwind CSS.
+
+    Composants séparés :
+
+    ChallengeCard (affichage défi avec progression).
+
+    BadgeGallery (liste des badges obtenus et à débloquer).
+
+    ObjectiveIntegration (liaison entre défis et objectifs).
+
+    GamificationPage (page principale).
+
+    Prévoir intégration avec backend (sauvegarde progression, attribution badges).
+
+    👉 Objectif : Générer un module ludique et motivant, qui aide l’utilisateur à respecter ses budgets et objectifs grâce à des défis et récompenses.
+
+***********************************************************************
+
+
+
+

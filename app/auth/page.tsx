@@ -1,5 +1,5 @@
-import AuthPage from "@/features/auth/auth-page"
+import { AuthPage } from "@/components/auth/auth-page"
 
-export default function AuthRoute() {
+export default function Auth() {
   return <AuthPage />
 }

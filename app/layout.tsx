@@ -4,12 +4,11 @@ import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
-import Navbar from "@/components/shared/navbar"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "MesFactures - Gestion de Factures", // Updated title to reflect the app name
-  description: "Application de gestion des factures et dépenses en Ariary", // Updated description for invoice management
+  title: "MesFactures - Gestion Financière",
+  description: "Application complète de gestion financière - factures, dépenses, revenus et prêts",
   generator: "v0.app",
 }
 
@@ -19,9 +18,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="fr">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
-        <Navbar />
         <Suspense fallback={null}>{children}</Suspense>
         <Analytics />
       </body>
