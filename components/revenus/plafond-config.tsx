@@ -130,9 +130,9 @@ export function PlafondConfig({ plafondGlobal, utilisationActuelle, onPlafondCha
             <Progress
               value={Math.min(pourcentageUtilisation, 100)}
               className={`h-3 ${
-                pourcentageUtilisation >= 100
+                pourcentageUtilisation >= 80
                   ? "[&>div]:bg-destructive"
-                  : pourcentageUtilisation >= 80
+                  : pourcentageUtilisation >= 50
                     ? "[&>div]:bg-secondary"
                     : "[&>div]:bg-primary"
               }`}

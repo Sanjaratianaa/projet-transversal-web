@@ -98,31 +98,7 @@ export function FactureTable({ factures, onEdit, onDelete }: FactureTableProps) 
               <TableCell>{format(facture.dateEmission, "dd/MM/yyyy", { locale: fr })}</TableCell>
               <TableCell>{format(facture.dateEcheance, "dd/MM/yyyy", { locale: fr })}</TableCell>
               <TableCell>{getStatutBadge(facture.statut)}</TableCell>
-              <TableCell>
-                <div className="flex flex-col gap-2">
-                  {/* Modifier */}
-                  <FactureFormDialog
-                    facture={facture}
-                    onSubmit={() => onEdit(facture)}
-                    trigger={
-                      <Button variant="ghost" size="sm" className="justify-start">
-                        <EditIcon className="h-4 w-4 mr-2" />
-                      </Button>
-                    } 
-                  />
-
-                  {/* Supprimer */}
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="justify-start text-destructive hover:bg-destructive/10"
-                    onClick={() => onDelete(facture.id)}
-                  >
-                    <TrashIcon className="h-4 w-4 mr-2" />
-                    Supprimer
-                  </Button>
-                </div>
-              </TableCell>
+              
               <TableCell>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
