@@ -102,7 +102,7 @@ export default function ObjectifsPage() {
               <p className="text-muted-foreground mt-1">Définissez et suivez vos objectifs d'épargne</p>
             </div>
             {!showForm && (
-              <Button onClick={() => setShowForm(true)} className="bg-secondary hover:bg-secondary/90">
+              <Button onClick={() => setShowForm(true)} className="bg-primary hover:bg-primary/90">
                 <Plus className="h-4 w-4 mr-2" />
                 Nouvel objectif
               </Button>

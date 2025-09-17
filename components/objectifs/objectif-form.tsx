@@ -158,7 +158,7 @@ export function ObjectifForm({ onSubmit, onCancel, initialData }: ObjectifFormPr
           </div>
 
           <div className="flex gap-2 pt-4">
-            <Button type="submit" className="bg-secondary hover:bg-secondary/90">
+            <Button type="submit" className="bg-primary hover:bg-primary/90">
               {initialData ? "Mettre à jour" : "Créer l'objectif"}
             </Button>
             <Button type="button" variant="outline" onClick={onCancel}>

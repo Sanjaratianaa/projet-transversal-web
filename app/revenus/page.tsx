@@ -197,7 +197,7 @@ export default function RevenusPage() {
                 Gérez vos sources de revenus, définissez des plafonds d'utilisation et suivez votre budget
               </p>
             </div>
-            <Button onClick={handleAddRevenu}>
+            <Button onClick={handleAddRevenu} className="bg-primary">
               <Plus className="mr-2 h-4 w-4" />
               Nouveau revenu
             </Button>

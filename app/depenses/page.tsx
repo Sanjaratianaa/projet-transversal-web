@@ -33,7 +33,7 @@ const mockDepenses: Depense[] = [
     montant: 85000,
     type: "variable",
     frequence: "hebdomadaire",
-    date: new Date("2024-01-15"),
+    date: new Date("2025-09-15"),
     notes: "Supermarché Score",
   },
   {
@@ -43,7 +43,7 @@ const mockDepenses: Depense[] = [
     montant: 45000,
     type: "variable",
     frequence: "hebdomadaire",
-    date: new Date("2024-01-10"),
+    date: new Date("2025-09-10"),
     notes: "Station Total",
   },
   {
@@ -53,7 +53,7 @@ const mockDepenses: Depense[] = [
     montant: 600000,
     type: "fixe",
     frequence: "mensuelle",
-    date: new Date("2024-01-01"),
+    date: new Date("2025-09-01"),
     notes: "Loyer mensuel",
   },
   {
@@ -63,7 +63,7 @@ const mockDepenses: Depense[] = [
     montant: 25000,
     type: "variable",
     frequence: "unique",
-    date: new Date("2024-01-20"),
+    date: new Date("2025-09-20"),
     notes: "Visite de routine",
   },
   {
@@ -73,7 +73,7 @@ const mockDepenses: Depense[] = [
     montant: 15000,
     type: "variable",
     frequence: "unique",
-    date: new Date("2024-01-18"),
+    date: new Date("2025-09-18"),
     notes: "Sortie en famille",
   },
 ]

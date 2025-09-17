@@ -184,7 +184,7 @@ export default function PretsPage() {
                 Gérez vos prêts, simulez des scénarios et suivez vos remboursements
               </p>
             </div>
-            <Button onClick={handleAddPret}>
+            <Button onClick={handleAddPret} className="bg-primary">
               <Plus className="mr-2 h-4 w-4" />
               Nouveau prêt
             </Button>
