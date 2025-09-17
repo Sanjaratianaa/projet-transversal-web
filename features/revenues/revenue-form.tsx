@@ -197,7 +197,7 @@ export default function RevenueForm({ revenue, onSubmit, onCancel, isLoading = f
             {formData.plafondActif && (
               <div className="space-y-2 ml-6">
                 <Label htmlFor="plafondMensuel" className="text-sm font-medium">
-                  Plafond mensuel (Ar) *
+                  Plafond mensuel (%) *
                 </Label>
                 <Input
                   id="plafondMensuel"

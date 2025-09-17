@@ -1,0 +1,184 @@
+Crée une application web complète de gestion financière en React/Next.js avec Tailwind CSS, en utilisant strictement la palette jaune (#FFD700) et vert (#228B22) comme thème principal.
+
+## 🎯 FONCTIONNALITÉS GLOBALES
+
+### 1. AUTHENTIFICATION & SÉCURITÉ
+- **Page d'authentification unique** avec onglets Connexion/Inscription
+- **Inscription** : nom, email, téléphone, mot de passe (≥6 caractères)
+- **Connexion** classique et via Google/Facebook (boutons distincts)
+- **Mot de passe oublié** avec lien de réinitialisation
+- **Validation** des champs avec messages d'erreur clairs
+- **Logo "MF"** (MesFactures) présent sur toutes les pages
+
+### 2. GESTION DES FACTURES (URL: /factures)
+- **CRUD complet** : ajout, modification, suppression
+- **Formulaire** : fournisseur, type (électricité, eau, internet), montant (en Ariary), dates (émission/échéance), statut (payée/en attente)
+- **Historique avec filtrage** : par type, statut, période + pagination
+- **Export** PDF/Excel des données filtrées
+- **Scan OCR** (Tesseract.js) : capture photo/caméra + extraction texte automatique
+- **Badges colorés** : vert (payée), jaune (en attente), rouge (en retard)
+
+### 3. GESTION DES DÉPENSES (URL: /depenses)
+- **CRUD dépenses fixes et variables** : description, catégorie, montant (Ar), type, fréquence (unique/mensuelle/annuelle/hebdomadaire), date
+- **Alertes budget** : détection dépassement + notifications visuelles
+- **Visualisation** : graphiques interactifs (comparaisons mensuelles/annuelles)
+- **Catégorisation intelligente** : IA de suggestion automatique de catégories
+- **Synchronisation** avec les factures payées
+
+### 4. GESTION DES REVENUS (URL: /revenus)
+- **CRUD sources de revenus** : nom, type (fixe/variable), montant (Ar), fréquence (mensuelle/annuelle/ponctuelle)
+- **Plafond d'utilisation** : configuration en pourcentage (0-100%) avec barre de progression
+- **Section plafond global** : définition et suivi du plafond mensuel général
+- **Filtres avancés** : identiques au module factures
+
+### 5. GESTION DES PRÊTS (URL: /prets)
+- **CRUD prêts** : créancier, montant, taux, durée, date début
+- **Calcul automatique** des échéances et montants totaux
+- **Simulation** : scénarios (6/12 mois, taux variable) + visualisation graphique
+- **Historique** avec tri/filtrage par statut
+- **Calendrier de remboursement** avec notifications
+
+### 6. OBJECTIFS & RECOMMANDATIONS (URL: /objectifs)
+- **Gestion % épargne** : définition objectifs + répartition automatique
+- **Simulation épargne** : progression graphique + planification automatique
+- **Recommandations personnalisées** : analyse habitudes + suggestions économies
+- **Tableaux et rapports** visuels
+
+### 7. NOTIFICATIONS & AUTOMATISATIONS
+- **Rappels et alertes** : factures/dépenses/prêts (pop-up/push)
+- **Détection automatique** des échéances
+- **Import/Export** : CSV, API bancaire, PDF, Excel
+- **Traitement** : vérification doublons, mise à jour automatique
+
+### 8. TABLEAU DE BORD (URL: /dashboard)
+- **Analyses globales** : graphiques revenus/dépenses/objectifs/épargne/prêts
+- **Prévisions et tendances** : projections + algorithmes prédictifs
+- **Détection anomalies** : alertes dépenses inhabituelles
+- **Filtres avancés** : période, catégorie, comparaisons
+
+### 9. GAMIFICATION (URL: /defis)
+- **Défis et récompenses** : défis personnalisés avec suivi progression
+- **Système de badges** : bronze/argent/or/diamant selon performances
+- **Intégration objectifs** : liaison défis-objectifs financiers
+
+## 🎨 EXIGENCES TECHNIQUES & DESIGN
+
+### Stack Technique
+- **React/Next.js** avec App Router
+- **Tailwind CSS** pour le styling
+- **Composants shadcn/ui** pour l'interface
+- **Heroicons** pour les icônes
+- **Recharts/Chart.js** pour les graphiques
+- **Tesseract.js** pour l'OCR
+
+### Structure du Projet
+```
+/src
+  /features
+    /auth/ (LoginForm, RegisterForm, AuthPage)
+    /factures/ (FactureForm, FactureTable, FactureFilters, FactureOCRUploader)
+    /depenses/ (DepenseForm, DepenseTable, DepenseChart, BudgetAlert)
+    /revenus/ (RevenuForm, RevenuTable, PlafondConfig)
+    /prets/ (PretForm, PretTable, PretSimulation, PretCalendar)
+    /objectifs/ (ObjectifForm, EpargneChart, RecommandationsAI)
+    /notifications/ (NotificationPopup, ImportExportModule)
+    /dashboard/ (DashboardPage, RevenueChart, ForecastChart)
+    /gamification/ (ChallengeCard, BadgeGallery)
+  /components
+    /shared/ (Navbar, Sidebar, Button, Card, Modal)
+```
+
+### Consignes Stylistiques Strictes
+- **Palette exclusive** : jaune (#FFD700) et vert (#228B22) (couleur principale)
+- **Design moderne et responsive** (desktop + mobile)
+- **Boutons arrondis** avec ombres légères
+- **Badges colorés** pour les statuts
+- **Réutilisation stricte** des composants et styles existants
+- **Cohérence visuelle** totale entre toutes les pages
+
+### Spécificités Métier
+- **Devise** : tous les montants en Ariary (Ar)
+- **Dates** : format jour/mois/année
+- **Navigation** : URLs fixes (/auth, /factures, /depenses, /revenus, /prets, /objectifs, /dashboard, /defis)
+
+## 🚀 LIVRABLE ATTENDU
+
+Une application React/Next.js complète et cohérente avec toutes les pages et fonctionnalités listées ci-dessus, prête à être exécutée avec `npm run dev`, avec une intégration parfaite entre les modules et une expérience utilisateur fluide et professionnelle.
+
+************************************************************
+
+Ajoute à mon projet existant les fonctionnalités suivantes **sur toutes les pages contenant des listes de données** (factures, dépenses, revenus, prêts, objectifs, etc.) :
+
+---
+
+### 🔍 1. **Système de Filtrage Universel**
+Pour **chaque page avec un tableau/liste**, ajoute une barre de filtres contenant :
+- **Un champ de recherche globale** (par nom, description, etc.)
+- **Des filtres spécifiques** selon le contexte :
+  - **Factures** : Filtre par statut (payée/en attente), type, fournisseur, date
+  - **Dépenses** : Filtre par catégorie, type (fixe/variable), fréquence
+  - **Revenus** : Filtre par type (fixe/variable), fréquence
+  - **Prêts** : Filtre par statut (en cours/payé/en retard), créancier
+- **Filtre par date** (période personnalisable)
+- **Bouton "Réinitialiser"** pour effacer tous les filtres
+
+**Technique :**
+- Utiliser **exactement les mêmes composants de filtre** que sur la page des factures
+- Réutiliser les **composants shadcn/ui existants** (Input, Select, Button, DatePicker)
+- **Aucun nouveau style** : mêmes couleurs, espacements, polices
+
+---
+
+### ✏️ 2. **Formulaires CRUD Fonctionnels**
+Pour **chaque formulaire d'ajout et modification** :
+- **Validation complète** des champs (messages d'erreur clairs)
+- **Soumission** qui envoie les données à l'API (simuler avec console.log si pas d'API)
+- **Rafraîchissement automatique** de la liste après ajout/modification
+- **Modals** qui se ferment après soumission réussie
+- **État de chargement** pendant la soumission
+
+Pour **chaque action de suppression** :
+- **Confirmation** avant suppression (modal de confirmation)
+- **Suppression** qui actualise la liste
+- **Message de succès/erreur**
+
+**Technique :**
+- Utiliser les **composants Modal/Form/Button existants**
+- **States React** pour gérer les données des formulaires
+- **Gestion des erreurs** avec affichage utilisateur
+- **Réutilisation stricte** des patterns de code existants
+
+---
+
+### 🎨 3. **Consignes Stylistiques Strictes**
+- **Réutiliser EXACTEMENT les mêmes styles** que le reste de l'application
+- **Zéro nouveau style CSS** - tout doit provenir des classes Tailwind existantes
+- **Mêmes composants shadcn/ui** (Table, Card, Button, Input, Modal, Badge)
+- **Cohérence totale** avec l'existant
+
+---
+
+### 📱 4. **Responsive Design**
+- Assurer que **tous les filtres et formulaires** sont responsive
+- **Adaptation mobile** : filtres en accordéon ou modals sur mobile
+- **Mêmes breakpoints** que le reste de l'application
+
+---
+
+**Objectif :** Obtenir une application où toutes les pages de liste ont un système de filtrage cohérent et où tous les formulaires CRUD sont pleinement fonctionnels, avec une intégration visuelle parfaite.
+
+**Note :** Simuler les appels API avec des timeouts et console.log() si nécessaire, en prévoyant la structure pour une future intégration backend.
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
